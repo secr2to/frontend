@@ -5,10 +5,5 @@ interface SpacingProps {
 }
 
 export default function Spacing({ size }: SpacingProps) {
-  return (
-    <View
-      className="bg-default-background"
-      style={{ width: "100%", height: size }}
-    />
-  );
+  return <View style={{ width: "100%", height: size }} />;
 }

@@ -1,7 +1,7 @@
-import React, { Dispatch, SetStateAction } from "react";
-import { View, Image } from "react-native";
+import React from "react";
+import { View } from "react-native";
 import Typography from "../Typography/typography";
-import { TYPOGRAPHY_TYPE } from "../Typography/constant";
+import { COLOR, TYPOGRAPHY_TYPE } from "../Typography/constant";
 import { BUTTON_SIZE, BUTTON_STYLE } from "../Button/constant";
 import Button from "../Button/button";
 import Spacing from "../Spacing/spacing";
@@ -29,11 +29,12 @@ export default function BubblePopup({
     >
       <View className="absolute inset-0 bg-black opacity-80" />
       <View className="relative flex flex-col w-full bottom-[10px]">
-        <View className="bg-white border-primary border relative py-4 rounded-[5px]">
+        <View className="z-[1] bg-base-background border-primary border relative py-4 rounded-[5px]">
           <Typography
             style={TYPOGRAPHY_TYPE.SUB_REGULAR}
             label={content}
-            className="text-center text-black"
+            color={COLOR.BLACK}
+            className="text-center"
           />
           <View
             className="
