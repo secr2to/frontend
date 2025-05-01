@@ -1,5 +1,5 @@
 import React, { Dispatch, SetStateAction } from "react";
-import { View, TouchableOpacity, Pressable } from "react-native";
+import { View, Pressable } from "react-native";
 import { MenuItem } from "./constant";
 import { clsx } from "@/shared/utils";
 import Typography from "../Typography/typography";
