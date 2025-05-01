@@ -8,3 +8,79 @@
   padding: 0;
   font-family: "Pretendard", sans-serif;
 }
+
+:root {
+  --primary: #36a97e;
+  --secondary: #ffe768;
+  --primaryActive: #389170;
+  --error: #ff4500;
+  --success: #28a745;
+  --warning: #ffa500;
+  --info: #007bff;
+  --white: #f7f7f7;
+  --primary2: #ffcbcb;
+  --grayLight: #e6e6e6;
+  --grayDark: #808080;
+  --pureWhite: #ffffff;
+  --black: #0f0f0f;
+
+  /* 기본 테마 */
+  --defaultBackground: var(--white);
+  --defaultColor: var(--black);
+
+  /* 버튼 테마 */
+  --activeBackground: var(--primary);
+  --activeColor: var(--white);
+
+  --inactiveBackground: var(--grayLight);
+  --inactiveColor: var(--grayDark);
+
+  --reverseBackground: var(--white);
+  --reverseColor: var(--primary);
+
+  /* 기본 컴포넌트 테마 */
+  --baseBackground: var(--white);
+  --baseColor: var(--black);
+
+  /* 배경없는 필터 라벨 테마 */
+  --selected: var(--primary);
+  --unselected: var(--grayDark);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --primary: #36a97e;
+    --secondary: #f0d878;
+    --primaryActive: #50a788;
+    --success: #5cb85c;
+    --warning: #ffb84d;
+    --info: #5bc0de;
+    --white: #e0e0e0;
+    --primary2: #ffb3b3;
+    --black: #333333;
+    --grayLight: #d6d6d6;
+    --grayDark: #808080;
+
+    /* 기본 테마 */
+    --defaultBackground: var(--black);
+    --defaultColor: var(--white);
+
+    /* 버튼 테마 */
+    --activeBackground: var(--primary);
+    --activeColor: var(--white);
+
+    --inactiveBackground: var(--grayLight);
+    --inactiveColor: var(--grayDark);
+
+    --reverseBackground: var(--white);
+    --reverseColor: var(--primary);
+
+    /* 기본 컴포넌트 테마 */
+    --baseBackground: var(--white);
+    --baseColor: var(--black);
+
+    /* 배경없는 필터 라벨 테마 */
+    --selected: var(--primary);
+    --unselected: var(--grayDark);
+  }
+}

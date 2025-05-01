@@ -1,49 +1,61 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   // NOTE: Update this to include the paths to all of your component files.
-  content: ["./app/**/*.{js,jsx,ts,tsx}", "./shared/**/*.{js,jsx,ts,tsx}"],
+  content: [
+    "./app/**/*.{js,jsx,ts,tsx, html}",
+    "./shared/**/*.{js,jsx,ts,tsx, html}",
+    "./widgets/**/*.{js,jsx,ts,tsx, html}",
+  ],
   presets: [require("nativewind/preset")],
   darkMode: "class",
   theme: {
     extend: {
       colors: {
-        primary: {
-          light: "#36A97E",
-          dark: "#1A3D35",
+        primary: "var(--primary)",
+        primaryActive: "var(--primaryActive)",
+        secondary: "var(--secondary)",
+        error: "var(--error)",
+        success: "var(--success)",
+        warning: "var(--warning)",
+        info: "var(--info)",
+        white: "var(--white)",
+        primary2: "var(--primary2)",
+        grayLight: "var(--grayLight)",
+        grayDark: "var(--grayDark)",
+        pureWhite: "var(--pureWhite)",
+        black: "var(--black)",
+
+        /* 기본 배경, 텍스트 테마*/
+        default: {
+          background: "var(--defaultBackground)",
+          color: "var(--defaultColor)",
         },
-        primaryActive: {
-          light: "#389170",
-          dark: "#33A787",
+
+        /* 버튼 스타일 */
+        active: {
+          background: "var(--activeBackground)",
+          color: "var(--activeColor)",
         },
-        secondary: {
-          light: "#FFE768",
-          dark: "#B38600",
+
+        inactive: {
+          background: "var(--inactiveBackground)",
+          color: "var(--inactiveColor)",
         },
-        error: {
-          light: "#FF4500",
-          dark: "#B22222",
+
+        reverse: {
+          background: "var(--reverseBackground)",
+          color: "var(--reverseColor)",
         },
-        success: {
-          light: "#28A745",
-          dark: "#1E5631",
+
+        /* 기본 컴포넌트 테마 */
+        base: {
+          background: "var(--baseBackground)",
+          color: "var(--baseColor)",
         },
-        warning: {
-          light: "#FFA500",
-          dark: "#CC8400",
-        },
-        info: {
-          light: "#007BFF",
-          dark: "0056A6",
-        },
-        white: {
-          light: "F7F7F7",
-          dark: "F5F5F5",
-        },
-        primary2: {
-          light: "FFCBCB",
-        },
-        pureWhite: "#FFFFFF",
-        black: "#0F0F0F",
+
+        /* 라벨 테마 */
+        selected: "var(--selected)",
+        unselected: "var(--unselected)",
       },
     },
     plugins: [],
