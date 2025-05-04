@@ -32,11 +32,11 @@ export const buttonImage = (
 ) => {
   switch (provider) {
     case AUTH_PROVIDER.KAKAO:
-      return require("@/shared/images/kakaologo.svg");
+      return require("@/shared/images/kakaologo.png");
     case AUTH_PROVIDER.GOOGLE:
-      return require("@/shared/images/googlelogo.svg");
+      return require("@/shared/images/googlelogo.png");
     case AUTH_PROVIDER.NAVER:
-      return require("@/shared/images/naverlogo.svg");
+      return require("@/shared/images/naverlogo.png");
   }
 };
 
