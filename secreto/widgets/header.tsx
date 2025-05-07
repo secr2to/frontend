@@ -1,31 +1,45 @@
 import { Typography } from "@/shared/components";
-import {
-  Image,
-  ImageSourcePropType,
-  View,
-  TouchableOpacity,
-} from "react-native";
-import alarm from "@/shared/images/alarm.png";
+import { Image, View, Pressable } from "react-native";
 import back from "@/shared/images/back.png";
 import { useNavigation } from "@react-navigation/native";
 import {
   COLOR,
   TYPOGRAPHY_TYPE,
 } from "@/shared/components/Typography/constant";
+import Secreto from "@/shared/images/secreto.svg";
+import alarm from "@/shared/images/alarm.png";
 import { useEffect, useState } from "react";
+import React from "react";
+import { canGoBack } from "expo-router/build/global-state/routing";
 
-interface HeaderProps {
-  backButton?: boolean;
-  title: string | ImageSourcePropType;
-  notice?: number;
-}
-
-export default function Header({
-  backButton = true,
-  title,
-  notice = 0,
-}: HeaderProps) {
+export const BackButton = () => {
   const navigation = useNavigation();
+
+  return (
+    <Pressable
+      onPress={() => {
+        canGoBack() && navigation.goBack();
+      }}
+      className="px-5 py-2"
+    >
+      <Image source={back} style={{ width: 30, height: 30 }} />
+    </Pressable>
+  );
+};
+
+export const CustomTitle = ({ title }: { title?: string }) => {
+  return title ? (
+    <Typography
+      label={title}
+      style={TYPOGRAPHY_TYPE.MAIN_TITLE}
+      color={COLOR.BASE}
+    />
+  ) : (
+    <Secreto />
+  );
+};
+
+export const Alarm = ({ notice = 0 }: { notice?: number }) => {
   const [noticeLabel, setNoticeLabel] = useState<string>("");
 
   useEffect(() => {
@@ -39,42 +53,22 @@ export default function Header({
   }, [notice]);
 
   return (
-    <View className="relative flex flex-row items-center justify-between top-0 w-full h-[60px] bg-base-background border border-grayLight px-5">
-      <View className="flex flex-row items-center">
-        {backButton && navigation.canGoBack() && (
-          <TouchableOpacity onPress={() => navigation.goBack()}>
-            <Image source={back} style={{ width: 24, height: 24 }} />
-          </TouchableOpacity>
-        )}
-      </View>
-
-      <View className="absolute left-1/2 transform -translate-x-1/2">
-        {typeof title === "string" ? (
-          <Typography
-            label={title}
-            style={TYPOGRAPHY_TYPE.MAIN_TITLE}
-            color={COLOR.BLACK}
-          />
-        ) : (
-          <Image source={title} className="w-8 h-8" />
-        )}
-      </View>
-
+    <Pressable
+      className="px-5 py-2"
+      onPress={() => {
+        //TODO: history page redirect
+      }}
+    >
+      <Image source={alarm} style={{ width: 30, height: 30 }} />
       {noticeLabel && (
-        <View className="relative flex flex-end items-center">
-          <Image source={alarm} style={{ width: 22, height: 22 }} />
-          <View
-            className="absolute flex items-center justify-center -top-[10px] -right-[10px] px-3 py-1 bg-error rounded-full"
-            style={{ width: "100%", height: "100%" }}
-          >
-            <Typography
-              label={noticeLabel}
-              style={TYPOGRAPHY_TYPE.CAPTION_BOLD}
-              color={COLOR.WHITE}
-            />
-          </View>
+        <View className="absolute flex items-center justify-center size-6 inset-0 left-[10px] -top-[10px] bg-error rounded-full">
+          <Typography
+            label={noticeLabel}
+            style={TYPOGRAPHY_TYPE.LABEL_BOLD}
+            color={COLOR.WHITE}
+          />
         </View>
       )}
-    </View>
+    </Pressable>
   );
-}
+};
