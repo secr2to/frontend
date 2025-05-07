@@ -61,7 +61,7 @@ export const Alarm = ({ notice = 0 }: { notice?: number }) => {
     >
       <Image source={alarm} style={{ width: 30, height: 30 }} />
       {noticeLabel && (
-        <View className="absolute flex items-center justify-center size-6 inset-0 left-[10px] -top-[10px] bg-error rounded-full">
+        <View className="absolute flex items-center justify-center size-6 inset-0 left-[30px] bg-error rounded-full">
           <Typography
             label={noticeLabel}
             style={TYPOGRAPHY_TYPE.LABEL_BOLD}
