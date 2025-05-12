@@ -1,15 +1,11 @@
 import { create } from "zustand";
+import { userInfo } from "@/entities/users/type";
+import { userLogOut } from "./storage";
 
-interface User {
-  name: string;
-  email: string;
-  profileUrl?: string;
-}
-
-interface UserStore {
-  user: User | null;
+interface userStore {
+  user: userInfo | null;
   isLoggedIn: boolean;
-  setUser: (user: User) => void;
+  saveUser: (user: userInfo) => void;
   logout: () => void;
 }
 
@@ -18,19 +14,26 @@ interface UserStore {
  * const user = useUserStore((state) => state.user);
  * const isLoggedIn = useUserStore((state) => state.isLoggedIn);
  */
-const useUserStore = create<UserStore>((set) => ({
+const useUserStore = create<userStore>((set) => ({
   user: null,
   isLoggedIn: false,
-  setUser: (user) =>
-    set({
-      user,
-      isLoggedIn: true,
-    }),
-  logout: () =>
-    set({
-      user: null,
-      isLoggedIn: false,
-    }),
+  saveUser: async (user: userInfo) => {
+    try {
+      set({ user });
+      set({ isLoggedIn: true });
+    } catch (error) {
+      console.error("Error while saving user info:", error);
+    }
+  },
+  logout: async () => {
+    try {
+      await userLogOut();
+      set({ user: null });
+      set({ isLoggedIn: false });
+    } catch (error) {
+      console.error("Error while deleting user info:", error);
+    }
+  },
 }));
 
 export default useUserStore;
