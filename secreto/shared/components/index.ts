@@ -9,3 +9,4 @@ export { default as BubblePopup } from "./Popup/bubblePopup";
 export { default as SearchInputBox } from "./Input/searchInputBox";
 export { default as Inputbox } from "./Input/inputbox";
 export { default as AuthButton } from "./AuthButton/authButton";
+export { default as BadgeMenu } from "./Menus/badgeMenu";
