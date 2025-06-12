@@ -7,8 +7,8 @@ import { View } from "react-native";
 import { router } from "expo-router";
 import RoomListFallback from "@/entities/main/home/components/roomFallbackList";
 import { roomStatus } from "@/entities/main/home/type/type";
-import EnterRoomPopup from "@/entities/main/home/components/enterRoom";
 import { BUTTON_SIZE, BUTTON_STYLE } from "@/shared/components/Button/constant";
+import JoinRoomPopup from "@/entities/main/home/components/joinRoomPopup";
 
 export default function Home() {
   const [state, setState] = useState(menuItems[0].state);
@@ -47,7 +47,7 @@ export default function Home() {
           />
         </View>
       </View>
-      {modal && <EnterRoomPopup setModal={setModal} />}
+      {modal && <JoinRoomPopup setModal={setModal} />}
     </View>
   );
 }
