@@ -32,7 +32,7 @@ export default function NavMenu({
             key={item.label}
             onPress={() => setState(item.state)}
             className={clsx(
-              "flex-1 w-full py-2 bg-base-background",
+              "flex-1 w-full py-3 bg-base-background",
               item.state === state && "border-b-[2px] border-primary"
             )}
           >
