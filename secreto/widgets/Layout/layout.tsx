@@ -2,20 +2,25 @@ import { Tabs } from "expo-router";
 import React from "react";
 import { Image, View } from "react-native";
 import { menuItem } from "./constant";
+import { useThemeColors } from "@/shared/themes/useTheme";
+import { BackButton, CustomTitle } from "../header";
 
 interface TabLayoutProps {
   navData: menuItem[];
 }
 
 export default function Layout({ navData }: TabLayoutProps) {
+  const theme = useThemeColors();
   return (
     <Tabs
+      backBehavior="none"
       screenOptions={{
-        headerShown: false,
+        headerStyle: {
+          backgroundColor: theme.baseBackground,
+        },
         tabBarStyle: {
-          backgroundColor: "var(--baseBackground)",
+          backgroundColor: theme.baseBackground,
           borderTopWidth: 1,
-          borderTopColor: "var(--grayLight)",
           paddingVertical: 5,
         },
         tabBarItemStyle: {
@@ -23,11 +28,11 @@ export default function Layout({ navData }: TabLayoutProps) {
           alignItems: "center",
         },
         tabBarLabelStyle: {
-          fontSize: 8,
+          fontSize: 10,
           fontWeight: "bold",
         },
-        tabBarInactiveTintColor: "var(--unselected)",
-        tabBarActiveTintColor: "var(--selected)",
+        tabBarInactiveTintColor: theme.unselected,
+        tabBarActiveTintColor: theme.selected,
       }}
     >
       {navData.map((item) => (
@@ -35,6 +40,8 @@ export default function Layout({ navData }: TabLayoutProps) {
           key={item.label}
           name={item.path}
           options={{
+            headerTitle: () => <CustomTitle />,
+            headerLeft: () => <BackButton />,
             tabBarLabel: item.label,
             tabBarIcon: ({ focused }) => (
               <View className="size-[25px]">

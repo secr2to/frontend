@@ -26,7 +26,7 @@ export default function Inputbox({
       )}
     >
       <TextInput
-        className="flex w-full focus:outline-none text-black text-center text-[16px]"
+        className="flex w-full items-center focus:outline-none text-black text-center text-[16px]"
         placeholder={placeholder}
         value={value}
         onChangeText={setValue}

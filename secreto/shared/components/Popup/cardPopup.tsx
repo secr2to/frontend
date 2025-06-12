@@ -10,6 +10,7 @@ interface PopupProps {
   onSuccess?: () => void;
   cancelLabel?: string;
   onCancel?: () => void;
+  confirmDisabled?: boolean;
 }
 
 export default function CardPopup({
@@ -19,6 +20,7 @@ export default function CardPopup({
   onSuccess,
   cancelLabel,
   onCancel,
+  confirmDisabled = false,
 }: PopupProps) {
   return (
     <View className="z-[0] absolute px-[10px] inset-0 w-full h-full">
@@ -44,6 +46,7 @@ export default function CardPopup({
               size={BUTTON_SIZE.LARGE}
               label={confirmLabel}
               style={BUTTON_STYLE.ACTIVE}
+              disabled={confirmDisabled}
             />
           )}
           {cancelLabel && (
