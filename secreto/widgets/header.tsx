@@ -14,8 +14,7 @@ import { canGoBack } from "expo-router/build/global-state/routing";
 
 export const BackButton = () => {
   const navigation = useNavigation();
-
-  return (
+  return canGoBack() ? (
     <Pressable
       onPress={() => {
         canGoBack() && navigation.goBack();
@@ -24,6 +23,8 @@ export const BackButton = () => {
     >
       <Image source={back} style={{ width: 30, height: 30 }} />
     </Pressable>
+  ) : (
+    <></>
   );
 };
 
