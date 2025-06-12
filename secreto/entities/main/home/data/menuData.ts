@@ -11,10 +11,10 @@ export const menuItems = [
 export const badgeItems = [
   {
     label: "대기중",
-    state: "waiting",
+    state: "WAITING",
   },
   {
     label: "진행중",
-    state: "inProgress",
+    state: "PROGRESS",
   },
 ];
