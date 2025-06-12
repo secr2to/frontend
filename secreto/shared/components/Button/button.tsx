@@ -11,6 +11,7 @@ interface ButtonProps {
   className?: string;
   size?: (typeof BUTTON_SIZE)[keyof typeof BUTTON_SIZE];
   style?: (typeof BUTTON_STYLE)[keyof typeof BUTTON_STYLE];
+  disabled?: boolean;
 }
 
 export default function Button({
@@ -19,6 +20,7 @@ export default function Button({
   className,
   size = BUTTON_SIZE.MENU,
   style = BUTTON_STYLE.ACTIVE,
+  disabled = false,
 }: ButtonProps) {
   return (
     <Pressable
@@ -27,8 +29,10 @@ export default function Button({
         "rounded-[5px]",
         buttonSize(size),
         colorStyle(style),
-        className
+        className,
+        disabled && "opacity-50"
       )}
+      disabled={disabled}
     >
       <Typography
         style={TYPOGRAPHY_TYPE.MAIN_TITLE}
