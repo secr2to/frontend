@@ -5,6 +5,7 @@ module.exports = {
     "./app/**/*.{js,jsx,ts,tsx, html}",
     "./shared/**/*.{js,jsx,ts,tsx, html}",
     "./widgets/**/*.{js,jsx,ts,tsx, html}",
+    "./entities/**/*.{js,jsx,ts,tsx, html}",
   ],
   presets: [require("nativewind/preset")],
   darkMode: "class",
