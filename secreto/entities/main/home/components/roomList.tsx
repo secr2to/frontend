@@ -18,7 +18,7 @@ export default function RoomList({ state }: RoomListProps) {
       <View className="flex-1 items-center justify-center gap-4">
         <Image
           source={require("@/shared/images/splash-icon.png")}
-          className="w-48 h-48"
+          className="size-48"
           resizeMode="contain"
         />
         <Typography
