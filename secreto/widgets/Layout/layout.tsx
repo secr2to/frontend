@@ -3,7 +3,7 @@ import React from "react";
 import { Image, View } from "react-native";
 import { menuItem } from "./constant";
 import { useThemeColors } from "@/shared/themes/useTheme";
-import { BackButton, CustomTitle } from "../header";
+import { Alarm, BackButton, CustomTitle } from "../header";
 
 interface TabLayoutProps {
   navData: menuItem[];
@@ -42,6 +42,7 @@ export default function Layout({ navData }: TabLayoutProps) {
           options={{
             headerTitle: () => <CustomTitle />,
             headerLeft: () => <BackButton />,
+            headerRight: () => <Alarm />,
             tabBarLabel: item.label,
             tabBarIcon: ({ focused }) => (
               <View className="size-[25px]">
