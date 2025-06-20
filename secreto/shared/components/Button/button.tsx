@@ -26,7 +26,7 @@ export default function Button({
     <Pressable
       onPress={onPress}
       className={clsx(
-        "rounded-[5px]",
+        "rounded-[5px] active:opacity-70",
         buttonSize(size),
         colorStyle(style),
         className,
