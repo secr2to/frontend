@@ -45,13 +45,25 @@ export default function RoomCard({
   };
 
   return (
-    <Pressable onPress={() => router.push(`/room/${roomId}`)}>
-      <View className="flex flex-row w-full">
-        <Image
-          source={typeof imageUrl === "string" ? { uri: imageUrl } : imageUrl}
-          className="w-[80px] h-[80px] rounded-[5px] border border-inactive-background mb-5"
-          resizeMode="cover"
-        />
+    <Pressable
+      onPress={() => router.push(`/room/${roomId}`)}
+      className="active:opacity-80 active:bg-grayLight"
+    >
+      <View className="flex flex-row w-full py-2">
+        {imageUrl && (
+          <Image
+            source={typeof imageUrl === "string" ? { uri: imageUrl } : imageUrl}
+            className="w-[80px] h-[80px] rounded-[5px] border border-inactive-background p-1"
+            resizeMode="contain"
+          />
+        )}
+        {!imageUrl && (
+          <Image
+            source={require("@/shared/images/splash-icon.png")}
+            className="w-[80px] h-[80px] rounded-[5px] border border-inactive-background p-1"
+            resizeMode="contain"
+          />
+        )}
         <View className="flex-1 flex-col p-2 gap-1">
           <Typography label={name} style={TYPOGRAPHY_TYPE.MAIN_TITLE} />
           <Typography label={getDate()} style={TYPOGRAPHY_TYPE.CAPTION_BOLD} />
