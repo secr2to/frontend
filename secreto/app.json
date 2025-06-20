@@ -32,6 +32,13 @@
           "resizeMode": "contain",
           "backgroundColor": "#ffffff"
         }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "앱이 친구들과 사진을 공유할 수 있도록 사진에 접근합니다.",
+          "cameraPermission": "앱이 친구들과 사진을 공유할 수 있도록 카메라에 접근합니다."
+        }
       ]
     ],
     "experiments": {
