@@ -7,14 +7,19 @@ import { BackButton, CustomTitle } from "../header";
 
 interface TabLayoutProps {
   navData: menuItem[];
+  headerShown?: boolean;
 }
 
-export default function Layout({ navData }: TabLayoutProps) {
+export default function Layout({
+  navData,
+  headerShown = true,
+}: TabLayoutProps) {
   const theme = useThemeColors();
   return (
     <Tabs
       backBehavior="none"
       screenOptions={{
+        headerShown: headerShown,
         headerStyle: {
           backgroundColor: theme.baseBackground,
         },

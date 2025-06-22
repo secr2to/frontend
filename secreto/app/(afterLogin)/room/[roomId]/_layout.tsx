@@ -1,5 +1,4 @@
-import Rayout from "@/widgets/Layout/layout";
-import { inGameNavData } from "@/widgets/Layout/data";
+import { Stack } from "expo-router";
 export default function RoomLayout() {
-  return <Rayout navData={inGameNavData} />;
+  return <Stack screenOptions={{ headerShown: false }} />;
 }

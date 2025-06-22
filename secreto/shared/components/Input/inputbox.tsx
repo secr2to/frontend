@@ -8,6 +8,7 @@ interface InputboxProps {
   setValue?: Dispatch<SetStateAction<string>> | ((value: string) => void);
   className?: string;
   readonly?: boolean;
+  activeBorder?: boolean;
 }
 
 export default function Inputbox({
@@ -16,12 +17,13 @@ export default function Inputbox({
   setValue,
   className,
   readonly = false,
+  activeBorder = true,
 }: InputboxProps) {
   return (
     <View
       className={clsx(
         "bg-base-background relative w-full p-2 h-[36px] border rounded-[4px] border-grayLight",
-        value && "border-b-[3px] border-b-active-background",
+        value && activeBorder && "border-b-[3px] border-b-active-background",
         className
       )}
     >

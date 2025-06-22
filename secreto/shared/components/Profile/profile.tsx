@@ -8,12 +8,14 @@ interface ProfileProps {
   imageUri: ImageSourcePropType | string;
   size?: (typeof PROFILE_SIZE)[keyof typeof PROFILE_SIZE];
   className?: string;
+  resizeMode?: "cover" | "contain" | "stretch" | "repeat" | "center";
 }
 
 const Profile = ({
   imageUri,
   size = PROFILE_SIZE.MEDIUM,
   className,
+  resizeMode = "cover",
 }: ProfileProps) => {
   return (
     <View
@@ -27,7 +29,7 @@ const Profile = ({
       <Image
         source={typeof imageUri === "string" ? { uri: imageUri } : imageUri}
         style={{ width: "100%", height: "100%" }}
-        resizeMode="cover"
+        resizeMode={resizeMode}
       />
     </View>
   );
