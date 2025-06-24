@@ -1,5 +1,9 @@
 import { api } from "@/shared/kyInstance";
-import { getTokenResponse, getUserResponse } from "./type";
+import {
+  getTokenResponse,
+  getUserLogoutResponse,
+  getUserResponse,
+} from "./type";
 
 export const getUserToken = async (
   tempId: string
@@ -21,4 +25,15 @@ export const getUserInfo = async (): Promise<getUserResponse> => {
   }
 
   return response.json();
+};
+
+export const logout = async (): Promise<getUserLogoutResponse> => {
+  try {
+    const response = await api.post(`logout`);
+
+    return response.json();
+  } catch (error) {
+    console.error("Error while logging out user:", error);
+    throw error;
+  }
 };

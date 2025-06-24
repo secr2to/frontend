@@ -16,10 +16,17 @@ export type userInfo = {
   email: string;
   nickname: string;
   profileUrl: string;
+  searchId: string;
 };
 
 export type getUserResponse = {
   timestamp: number;
   message: string;
   data: userInfo;
+};
+
+export type getUserLogoutResponse = {
+  timestamp: number;
+  message: string;
+  data: null;
 };
