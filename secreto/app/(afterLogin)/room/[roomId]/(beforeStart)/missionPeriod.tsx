@@ -27,7 +27,7 @@ export default function EndDatePage() {
             roomInfo &&
             mutate({
               roomId,
-              endDate: roomInfo?.endDate,
+              endDate: roomInfo?.endDate.toString(),
               missionPeriod: missionPeriod,
             })
           }

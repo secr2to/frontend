@@ -3,10 +3,9 @@ import {
   COLOR,
   TYPOGRAPHY_TYPE,
 } from "@/shared/components/Typography/constant";
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { View } from "react-native";
 import { useJoinRoom } from "../query/useJoinRoom";
-import { router } from "expo-router";
 
 interface JoinRoomPopupProps {
   setModal: Dispatch<SetStateAction<boolean>>;
@@ -14,23 +13,12 @@ interface JoinRoomPopupProps {
 
 export default function JoinRoomPopup({ setModal }: JoinRoomPopupProps) {
   const [inviteCode, setInviteCode] = useState("");
-  const {
-    mutate,
-    data: roomData,
-    isSuccess,
-    isError,
-  } = useJoinRoom(inviteCode);
-
-  useEffect(() => {
-    if (roomData && isSuccess) {
-      router.push(`/room/${roomData.data.roomId}`);
-    }
-  }, [roomData, isSuccess]);
+  const { mutate, isError } = useJoinRoom();
 
   return (
     <CardPopup
       onClose={() => setModal(false)}
-      onSuccess={() => mutate()}
+      onSuccess={() => mutate(inviteCode)}
       confirmLabel="입장하기"
       confirmDisabled={!inviteCode.trim()}
     >

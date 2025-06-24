@@ -7,17 +7,23 @@ interface MissionCardProps {
   mission: string;
   onChecked: () => void;
   onUnchecked?: () => void;
+  checked?: boolean;
 }
 
 export default function MissionCard({
   mission,
   onChecked,
   onUnchecked,
+  checked = false,
 }: MissionCardProps) {
   return (
     <View className="flex flex-row items-center justify-between">
       <Typography label={mission} style={TYPOGRAPHY_TYPE.MAIN_REGULAR} />
-      <Checkbox onChecked={onChecked} onUnchecked={onUnchecked} />
+      <Checkbox
+        onChecked={onChecked}
+        onUnchecked={onUnchecked}
+        check={checked}
+      />
     </View>
   );
 }

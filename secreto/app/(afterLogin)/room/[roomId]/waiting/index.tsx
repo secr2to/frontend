@@ -5,26 +5,22 @@ import {
   clothColorData,
   skinColorData,
 } from "@/shared/components/Profile/color";
-import RegistRoomName from "@/entities/room/regist/components/roomName";
-import RegistEndDate from "@/entities/room/regist/components/endDate";
-import RegistMissionPeriod from "@/entities/room/regist/components/missionPeriod";
 import RegistProfile from "@/entities/room/regist/components/profile";
 import CharacterSelectPopup from "@/entities/room/regist/components/characterSelectPopup";
 import RegistIntroduction from "@/entities/room/regist/components/introduction";
-import { useRegistRoom } from "@/entities/room/regist/query/useRegistRoom";
 import { TYPOGRAPHY_TYPE } from "@/shared/components/Typography/constant";
 import { registStep } from "@/entities/room/regist/type/type";
+import { useLocalSearchParams } from "expo-router";
+import { useSettingProfile } from "@/entities/room/setting/query/useSettingProfile";
 
-export default function RoomRegist() {
-  const [roomName, setRoomName] = useState<string>("");
-  const [endDate, setEndDate] = useState<Date>(new Date());
-  const [missionPeriod, setMissionPeriod] = useState<string>("1");
+export default function Waiting() {
+  const { roomId } = useLocalSearchParams() as { roomId: string };
   const [useProfile, setUseProfile] = useState<boolean>(false);
   const [nickname, setNickname] = useState<string>("");
   const [introduction, setIntroduction] = useState<string>("");
   const [profileImage, setProfileImage] = useState<File>();
   const [profileImageUri, setProfileImageUri] = useState<string>("");
-  const [step, setStep] = useState<registStep>("roomName");
+  const [step, setStep] = useState<registStep>("profile");
   const [clothesColor, setClothesColor] = useState<string>(
     clothColorData[Math.floor(Math.random() * clothColorData.length)]?.name
   );
@@ -34,35 +30,20 @@ export default function RoomRegist() {
   const [openProfileOption, setOpenProfileOption] = useState<boolean>(false);
   const [characterPopup, setCharacterPopup] = useState<boolean>(false);
   const [characterOption, setCharacterOption] = useState<string>("skin");
-  const { mutate, isPending } = useRegistRoom();
+  const { mutate, isPending } = useSettingProfile(roomId);
 
   const stepController = () => {
     switch (step) {
-      case "roomName":
-        setStep("endDate");
-        break;
-      case "endDate":
-        setStep("missionPeriod");
-        break;
-      case "missionPeriod":
-        setStep("profile");
-        break;
       case "profile":
         setStep("introduction");
         break;
     }
   };
 
-  const registRoom = () => {
+  const settingProfile = () => {
     const formData = new FormData();
-    formData.append("name", roomName);
-    formData.append(
-      "endDate",
-      endDate.toISOString().split("T")[0] + "T00:00:00"
-    );
-    formData.append("missionPeriod", missionPeriod);
-    formData.append("useProfileYn", useProfile.toString());
     formData.append("nickname", nickname);
+    formData.append("useProfileYn", useProfile.toString());
     formData.append("selfIntroduction", introduction);
     if (useProfile) {
       formData.append("profileImage", profileImage as File);
@@ -76,18 +57,12 @@ export default function RoomRegist() {
 
   const buttonLabel = () => {
     switch (step) {
-      case "introduction":
-        return "게임 생성";
-      case "roomName":
-        return "다음";
-      case "endDate":
-        return "다음";
-      case "missionPeriod":
-        return "다음";
       case "profile":
         return "다음";
+      case "introduction":
+        return "입장 신청";
       default:
-        return "다음";
+        return "확인";
     }
   };
 
@@ -100,7 +75,7 @@ export default function RoomRegist() {
           resizeMode="contain"
         />
         <Typography
-          label="마니또 게임을 생성 중 입니다..."
+          label="마니또 게임에 입장 신청 중 입니다..."
           style={TYPOGRAPHY_TYPE.MAIN_TITLE}
         />
       </View>
@@ -112,18 +87,6 @@ export default function RoomRegist() {
       {/* !TODO: 개선 과정에서 상단 진행 바 구현 예정 */}
       <View className="relative flex-1 px-5 py-10">
         <View className="flex flex-col items-center gap-5">
-          {step === "roomName" && (
-            <RegistRoomName roomName={roomName} setRoomName={setRoomName} />
-          )}
-          {step === "endDate" && (
-            <RegistEndDate date={endDate} setDate={setEndDate} />
-          )}
-          {step === "missionPeriod" && (
-            <RegistMissionPeriod
-              missionPeriod={missionPeriod}
-              setMissionPeriod={setMissionPeriod}
-            />
-          )}
           {step === "profile" && (
             <RegistProfile
               useProfile={useProfile}
@@ -131,7 +94,7 @@ export default function RoomRegist() {
               skinColor={skinColor}
               nickname={nickname}
               setNickname={setNickname}
-              roomName={roomName}
+              roomName={""}
               openProfileOption={openProfileOption}
               setOpenProfileOption={setOpenProfileOption}
               profileImageUri={profileImageUri}
@@ -143,7 +106,7 @@ export default function RoomRegist() {
           )}
           {step === "introduction" && (
             <RegistIntroduction
-              roomName={roomName}
+              roomName={""}
               introduction={introduction}
               setIntrduction={setIntroduction}
             />
@@ -154,13 +117,10 @@ export default function RoomRegist() {
             label={buttonLabel()}
             size="medium"
             disabled={
-              (step === "roomName" && roomName.length < 2) ||
-              (step === "endDate" && !endDate) ||
-              (step === "missionPeriod" && !missionPeriod) ||
               (step === "profile" && nickname.length < 2) ||
               (step === "introduction" && introduction.length < 5)
             }
-            onPress={step === "introduction" ? registRoom : stepController}
+            onPress={step === "introduction" ? settingProfile : stepController}
           />
         </View>
       </View>

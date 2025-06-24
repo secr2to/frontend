@@ -46,14 +46,16 @@ export default function WaitingMemberList({ roomId }: WaitingMemberListProps) {
           />
         </View>
       </View>
-      {waitingMember?.map((member) => (
-        <MemberCard
-          member={member}
-          key={member.searchId}
-          selectedMember={selectedMember}
-          onPress={() => setSelectedMember(member.roomUserId)}
-        />
-      ))}
+      <View className="flex flex-col gap-2">
+        {waitingMember?.map((member) => (
+          <MemberCard
+            member={member}
+            key={member.searchId}
+            selectedMember={selectedMember}
+            onPress={() => setSelectedMember(member.roomUserId)}
+          />
+        ))}
+      </View>
     </View>
   );
 }

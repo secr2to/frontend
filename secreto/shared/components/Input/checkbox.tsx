@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Pressable, Text, View } from "react-native";
 import { clsx } from "@/shared/utils";
 import Typography from "../Typography/typography";
+import { TYPOGRAPHY_TYPE } from "../Typography/constant";
 
 interface CheckboxProps {
   label?: string;
@@ -32,7 +33,7 @@ export default function Checkbox({
   return (
     <Pressable
       onPress={() => handleCheck()}
-      className="flex flex-row items-center justify-center"
+      className="flex flex-row items-center justify-center gap-2"
     >
       <View
         className={clsx(
@@ -44,7 +45,7 @@ export default function Checkbox({
       >
         {checked && <Typography label="✔" />}
       </View>
-      {label && <Typography label={label} />}
+      {label && <Typography label={label} style={TYPOGRAPHY_TYPE.BODY_BOLD} />}
     </Pressable>
   );
 }
