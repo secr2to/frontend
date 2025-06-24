@@ -15,7 +15,6 @@ export default function AcceptedMemberList({
 }: AcceptedMemberListProps) {
   const { data: members } = useGetRoomMembers(roomId);
   const [acceptedMember, setAcceptedMember] = useState<roomMember[]>([]);
-
   useEffect(() => {
     if (!members) return;
     setAcceptedMember(members.filter((member) => member.standbyYn === false));
@@ -29,9 +28,11 @@ export default function AcceptedMemberList({
           style={TYPOGRAPHY_TYPE.MAIN_TITLE}
         />
       </View>
-      {acceptedMember?.map((member) => (
-        <MemberCard member={member} key={member.searchId} />
-      ))}
+      <View className="flex flex-col gap-2">
+        {acceptedMember?.map((member) => (
+          <MemberCard member={member} key={member.searchId} />
+        ))}
+      </View>
     </View>
   );
 }

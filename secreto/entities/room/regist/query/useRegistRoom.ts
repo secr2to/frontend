@@ -7,7 +7,9 @@ export const useRegistRoom = () => {
   return useMutation<registRoomResponse, Error, FormData>({
     mutationFn: (roomData) => postRegistRoom(roomData),
     onSuccess: (response) => {
-      router.push(`/(afterLogin)/room/${response.data.roomId}/(beforeStart)`);
+      router.replace(
+        `/(afterLogin)/room/${response.data.roomId}/(beforeStart)`
+      );
     },
   });
 };

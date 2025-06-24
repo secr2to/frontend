@@ -5,9 +5,13 @@ import { roomInfo } from "../../regist/type/type";
 
 interface RoomInfoProps {
   roomInfo: roomInfo;
+  isManager?: boolean;
 }
 
-export default function RoomInfoList({ roomInfo }: RoomInfoProps) {
+export default function RoomInfoList({
+  roomInfo,
+  isManager = false,
+}: RoomInfoProps) {
   return (
     <View className="flex-1 flex-col gap-2 px-10 py-5">
       <View className="flex flex-col gap-2 w-full justify-center items-center">
@@ -19,19 +23,21 @@ export default function RoomInfoList({ roomInfo }: RoomInfoProps) {
           />
         </View>
       </View>
-      <RoomInfo
-        route={() => router.push("./roomProfile")}
-        label="방 이미지 수정"
-      />
+      {isManager && (
+        <RoomInfo
+          route={isManager ? () => router.push("./roomProfile") : undefined}
+          label="방 이미지 수정"
+        />
+      )}
       <RoomInfo label="방 이름" value={roomInfo.name} />
       <RoomInfo
         label="마니또 종료일"
-        route={() => router.push("./endDate")}
-        value={roomInfo.endDate.split("T")[0]}
+        route={isManager ? () => router.push("./endDate") : undefined}
+        value={roomInfo.endDate.toString().split("T")[0]}
       />
       <RoomInfo
         label={"미션 주기"}
-        route={() => router.push("./missionPeriod")}
+        route={isManager ? () => router.push("./missionPeriod") : undefined}
         value={roomInfo.missionPeriod + "일"}
       />
     </View>

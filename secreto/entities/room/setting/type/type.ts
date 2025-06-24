@@ -9,6 +9,7 @@ export type roomMember = {
   skinColorRgb: string;
   clothesColorRgb: string;
   searchId: string;
+  roomCharacterUrl: string;
 };
 
 export type getMembersResponse = {
@@ -31,6 +32,10 @@ export type changeRoomProfileResponse = {
   data: changeRoomResponseData;
 };
 
+export type gameStartResponseData = {
+  roomId: number;
+};
+
 export type changeRoomResponse = {
   timestamp: number;
   message: string;
@@ -48,8 +53,34 @@ export type systemMission = {
   content: string;
 };
 
+export type getMyRoleResponseData = {
+  isManagerYn: boolean;
+};
+
 export type getMissionsResponse = {
   timestamp: number;
   message: string;
   data: systemMission[];
+};
+
+export type settingProfileResponseData = {
+  roomUserId: number;
+};
+
+export type settingProfileResponse = {
+  timestamp: number;
+  message: string;
+  data: settingProfileResponseData;
+};
+
+export type getMyRoleResponse = {
+  timestamp: number;
+  message: string;
+  data: getMyRoleResponseData;
+};
+
+export type gameStartResponse = {
+  timestamp: number;
+  message: string;
+  data: gameStartResponseData;
 };

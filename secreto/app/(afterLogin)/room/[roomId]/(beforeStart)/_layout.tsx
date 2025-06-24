@@ -1,9 +1,17 @@
-import { Stack, Tabs } from "expo-router";
+import { Redirect, Stack, useLocalSearchParams } from "expo-router";
 import { BackButton } from "@/widgets/header";
-import { useColorScheme } from "react-native";
 import { useThemeColors } from "@/shared/themes/useTheme";
+import { useGetRoomInfo } from "@/entities/room/regist/query/useGetRoomInfo";
+
 export default function RoomLayout() {
   const useColor = useThemeColors();
+  const { roomId } = useLocalSearchParams() as { roomId: string };
+  const { data: roomInfo, isLoading } = useGetRoomInfo(roomId);
+
+  if (!isLoading && roomInfo?.status !== "WAITING") {
+    return <Redirect href={`/(afterLogin)/room/${roomId}/(afterStart)/feed`} />;
+  }
+
   return (
     <Stack
       screenOptions={{
