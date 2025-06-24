@@ -59,7 +59,7 @@ export default function RoomCard({
         )}
         {!imageUrl && (
           <Image
-            source={require("@/shared/images/splash-icon.png")}
+            source={require("@/shared/images/default.png")}
             className="w-[80px] h-[80px] rounded-[5px] border border-inactive-background p-1"
             resizeMode="contain"
           />

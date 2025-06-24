@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { View, Image, Text, ImageSourcePropType } from "react-native";
 import { clsx } from "../../utils";
 import { PROFILE_SIZE } from "./constant";
@@ -17,6 +17,7 @@ const Profile = ({
   className,
   resizeMode = "cover",
 }: ProfileProps) => {
+  const [isLoading, setIsLoading] = useState(true);
   return (
     <View
       className={clsx(
@@ -27,9 +28,16 @@ const Profile = ({
       )}
     >
       <Image
-        source={typeof imageUri === "string" ? { uri: imageUri } : imageUri}
+        source={
+          isLoading
+            ? require("@/shared/images/default.png")
+            : typeof imageUri === "string"
+            ? { uri: imageUri }
+            : imageUri
+        }
         style={{ width: "100%", height: "100%" }}
         resizeMode={resizeMode}
+        onLoadEnd={() => setIsLoading(false)}
       />
     </View>
   );
