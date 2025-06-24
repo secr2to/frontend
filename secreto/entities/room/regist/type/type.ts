@@ -17,7 +17,7 @@ export type roomInfo = {
   status: roomStatus;
   code: string;
   startData: string;
-  endDate: string;
+  endDate: Date;
   missionPeriod: string;
   imageUrl: string;
 };

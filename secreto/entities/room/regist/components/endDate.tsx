@@ -19,12 +19,12 @@ export default function RegistEndDate({ date, setDate }: RegistRoomNameProps) {
         mode="date"
         locale="ko-KR"
         display="inline"
-        minimumDate={new Date(new Date().setDate(new Date().getDate() + 1))}
-        maximumDate={new Date(new Date().setDate(new Date().getDate() + 90))}
+        minimumDate={new Date(new Date().setDate(new Date().getDate() + 3))}
+        maximumDate={new Date(new Date().setDate(new Date().getDate() + 31))}
         onChange={(event, selectedDate) => {
           if (selectedDate) {
-            const koreaDate = new Date(selectedDate.getTime());
-            setDate(koreaDate);
+            selectedDate.setHours(9, 0, 0, 0);
+            setDate(selectedDate);
           }
         }}
       />

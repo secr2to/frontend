@@ -15,7 +15,7 @@ export const inGameNavData: menuItem[] = [
   },
   {
     label: "피드",
-    path: "index",
+    path: "feed",
     source: require("@/shared/images/feed.png"),
     activeSource: require("@/shared/images/feedActive.png"),
   },

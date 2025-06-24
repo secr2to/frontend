@@ -8,7 +8,7 @@ export const changeRoomImage = async (
   try {
     const response = api.put(`rooms/${roomId}/images`, {
       json: {
-        imageUrl: image,
+        roomImage: image,
       },
     });
     return response.json();

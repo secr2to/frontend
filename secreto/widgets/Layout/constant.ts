@@ -16,7 +16,7 @@ export type inGameMenuLabel =
 export type inGameMenuPath =
   | "mission"
   | "chatting"
-  | "index"
+  | "feed"
   | "participant"
   | "myPage";
 
