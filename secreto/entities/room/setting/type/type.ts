@@ -45,7 +45,7 @@ export type changeRoomResponse = {
 export type changeMemberResponse = {
   timestamp: number;
   message: string;
-  data: memberResponseData;
+  data: memberResponseData[];
 };
 
 export type systemMission = {

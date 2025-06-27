@@ -16,10 +16,14 @@ export const getRoomMembers = async (
 
 export const accepMember = async (
   roomId: string,
-  roomUserId: number
+  roomUsers: number[]
 ): Promise<changeMemberResponse> => {
   try {
-    const response = await api.put(`rooms/${roomId}/accept/${roomUserId}`);
+    const response = await api.put(`rooms/${roomId}/accept`, {
+      json: {
+        roomUserIds: roomUsers,
+      },
+    });
 
     return response.json();
   } catch (error) {
@@ -30,10 +34,14 @@ export const accepMember = async (
 
 export const denyMember = async (
   roomId: string,
-  roomUserId: number
+  roomUsers: number[]
 ): Promise<changeMemberResponse> => {
   try {
-    const response = await api.put(`rooms/${roomId}/deny/${roomUserId}`);
+    const response = await api.put(`rooms/${roomId}/deny`, {
+      json: {
+        roomUserIds: roomUsers,
+      },
+    });
 
     return response.json();
   } catch (error) {
