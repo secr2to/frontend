@@ -1,4 +1,4 @@
-import { Tabs } from "expo-router";
+import { Tabs, useLocalSearchParams } from "expo-router";
 import React from "react";
 import { Image, View } from "react-native";
 import { menuItem } from "./constant";
@@ -14,6 +14,8 @@ export default function Layout({
   navData,
   headerShown = true,
 }: TabLayoutProps) {
+  const { roomId } = useLocalSearchParams() as { roomId: string };
+
   const theme = useThemeColors();
   return (
     <Tabs
@@ -44,6 +46,7 @@ export default function Layout({
         <Tabs.Screen
           key={item.label}
           name={item.path}
+          initialParams={{ roomId }}
           options={{
             headerTitle: () => <CustomTitle />,
             headerLeft: () => <BackButton />,
