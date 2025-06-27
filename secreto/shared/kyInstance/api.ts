@@ -115,4 +115,15 @@ const tokenRefresh = async (): Promise<tokenRefreshResponse | null> => {
   }
 };
 
+if (
+  typeof AbortSignal !== "undefined" &&
+  !AbortSignal.prototype.throwIfAborted
+) {
+  AbortSignal.prototype.throwIfAborted = function () {
+    if (this.aborted) {
+      throw new DOMException("The operation was aborted.", "AbortError");
+    }
+  };
+}
+
 export default api;
