@@ -6,10 +6,10 @@ export const changeRoomImage = async (
   image: File
 ): Promise<changeRoomResponse> => {
   try {
-    const response = api.put(`rooms/${roomId}/images`, {
-      json: {
-        roomImage: image,
-      },
+    const formData = new FormData();
+    formData.append("roomImage", image);
+    const response = await api.put(`rooms/${roomId}/images`, {
+      body: formData,
     });
     return response.json();
   } catch (error) {

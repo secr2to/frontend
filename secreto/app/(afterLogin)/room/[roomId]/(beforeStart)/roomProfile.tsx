@@ -11,7 +11,7 @@ export default function RoomProfile() {
   const { roomId } = useLocalSearchParams() as { roomId: string };
   const { data: roomInfo } = useGetRoomInfo(roomId as string);
   const { mutate } = useChangeRoomProfile();
-  const [profile, setProfile] = useState<File | undefined>();
+  const [profile, setProfile] = useState<File>();
   const [profileUrl, setProfileUrl] = useState<string>(
     roomInfo?.imageUrl || ""
   );
@@ -22,15 +22,22 @@ export default function RoomProfile() {
       mediaTypes: ["images", "videos"],
       allowsEditing: true,
       aspect: [1, 1],
-      quality: 1,
+      quality: 0.3,
     });
 
     if (!result.canceled && result.assets[0].uri) {
       const uri = result.assets[0].uri;
-      const fileName = uri.split("/").pop() || "profileImage";
-      const fileType = uri.split(".").pop() || "jpeg";
+      const fileName = uri.split("/").pop() || "profile";
+      const fileType = uri.split(".").pop() || "image/jpeg";
+
+      const file = {
+        uri,
+        name: fileName,
+        type: fileType,
+      } as any;
+
       setProfileUrl(uri);
-      setProfile(new File([uri], fileName, { type: `image/${fileType}` }));
+      setProfile(file);
     } else {
       console.error("Image selection was canceled or invalid.");
     }
@@ -45,13 +52,13 @@ export default function RoomProfile() {
         />
         <View>
           {profileUrl ? (
-            <Profile size="xlarge" imageUri={profileUrl} />
+            <Profile size="xlarge" imageUri={profileUrl} resizeMode="cover" />
           ) : (
             <View className="border border-inactive-background rounded-full p-2">
               <Image
                 source={require("@/shared/images/default.png")}
                 className="w-40 h-40 rounded-full"
-                resizeMode="contain"
+                resizeMode="cover"
               />
             </View>
           )}

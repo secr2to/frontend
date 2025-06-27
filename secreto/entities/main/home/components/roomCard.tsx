@@ -3,6 +3,7 @@ import { TYPOGRAPHY_TYPE } from "@/shared/components/Typography/constant";
 import { router } from "expo-router";
 import { Image, ImageSourcePropType, Pressable, View } from "react-native";
 import { roomStatus } from "../type/type";
+import { useState } from "react";
 
 interface RoomCardProps {
   roomId: number;
@@ -43,7 +44,7 @@ export default function RoomCard({
         return `${startDate} ~ ${endDate}`;
     }
   };
-
+  const [loading, setLoading] = useState<boolean>(true);
   return (
     <Pressable
       onPress={() => router.push(`/room/${roomId}`)}
@@ -52,16 +53,23 @@ export default function RoomCard({
       <View className="flex flex-row w-full py-2">
         {imageUrl && (
           <Image
-            source={typeof imageUrl === "string" ? { uri: imageUrl } : imageUrl}
-            className="w-[80px] h-[80px] rounded-[5px] border border-inactive-background p-1"
-            resizeMode="contain"
+            source={
+              loading
+                ? require("@/shared/images/default.png")
+                : typeof imageUrl === "string"
+                ? { uri: imageUrl }
+                : imageUrl
+            }
+            className="w-[80px] h-[80px] rounded-[5px] border border-inactive-background"
+            resizeMode="cover"
+            onLoadEnd={() => setLoading(false)}
           />
         )}
         {!imageUrl && (
           <Image
             source={require("@/shared/images/default.png")}
-            className="w-[80px] h-[80px] rounded-[5px] border border-inactive-background p-1"
-            resizeMode="contain"
+            className="w-[80px] h-[80px] rounded-[5px] border border-inactive-background"
+            resizeMode="cover"
           />
         )}
         <View className="flex-1 flex-col p-2 gap-1">
