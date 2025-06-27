@@ -46,13 +46,17 @@ export default function RegistProfile({
         mediaTypes: ["images", "videos"],
         allowsEditing: true,
         aspect: [1, 1],
-        quality: 1,
+        quality: 0.3,
       });
       if (!result.canceled && result.assets[0].uri) {
         const uri = result.assets[0].uri;
-        const fileName = uri.split("/").pop() || "profileImage";
-        const fileType = uri.split(".").pop() || "jpeg";
-        const file = new File([uri], fileName, { type: `image/${fileType}` });
+        const fileName = uri.split("/").pop() || "profile";
+        const fileType = uri.split(".").pop() || "image/jpeg";
+        const file = {
+          uri,
+          name: fileName,
+          type: fileType,
+        } as any;
 
         setProfileImage(file);
         setProfileImageUri(uri);
