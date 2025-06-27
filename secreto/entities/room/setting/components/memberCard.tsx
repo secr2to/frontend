@@ -9,12 +9,12 @@ import { clsx } from "@/shared/utils";
 
 interface MemberCardProps {
   member: roomMember;
-  selectedMember?: number;
+  selectedMembers?: number[];
   onPress?: () => void;
 }
 export default function MemberCard({
   member,
-  selectedMember,
+  selectedMembers,
   onPress,
 }: MemberCardProps) {
   return (
@@ -22,7 +22,7 @@ export default function MemberCard({
       <View
         className={clsx(
           "flex flex-row w-full gap-4 py-2 px-2 items-center rounded-md",
-          selectedMember === member.roomUserId
+          selectedMembers?.includes(member.roomUserId)
             ? "bg-active-background"
             : "bg-grayLight"
         )}

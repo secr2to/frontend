@@ -70,7 +70,7 @@ export default function SettingRoom() {
       (endDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24)
     );
 
-    return Math.ceil(differenceInDays / Number(roomInfo.missionPeriod));
+    return 1 + Math.floor(differenceInDays / Number(roomInfo.missionPeriod));
   };
 
   const acceptedMemberCount = () => {

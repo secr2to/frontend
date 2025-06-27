@@ -14,7 +14,7 @@ interface WaitingMemberListProps {
 export default function WaitingMemberList({ roomId }: WaitingMemberListProps) {
   const { data: members } = useGetRoomMembers(roomId);
   const [waitingMember, setWaitingMember] = useState<roomMember[]>([]);
-  const [selectedMember, setSelectedMember] = useState<number>(-1);
+  const [selectedMembers, setSelectedMembers] = useState<number[]>([]);
   const { mutate: deny } = useDenyMember();
   const { mutate: accept } = useAcceptMember();
 
@@ -22,6 +22,14 @@ export default function WaitingMemberList({ roomId }: WaitingMemberListProps) {
     if (!members) return;
     setWaitingMember(members.filter((member) => member.standbyYn === true));
   }, [members]);
+
+  const handleSelect = (memberId: number) => {
+    if (selectedMembers.includes(memberId)) {
+      setSelectedMembers((prev) => prev.filter((id) => id !== memberId));
+    } else {
+      setSelectedMembers((prev) => [...prev, memberId]);
+    }
+  };
 
   return (
     <View className="flex flex-col">
@@ -34,15 +42,15 @@ export default function WaitingMemberList({ roomId }: WaitingMemberListProps) {
           <Button
             label="승인"
             size="menu"
-            disabled={selectedMember === -1}
-            onPress={() => accept({ roomId, roomUserId: selectedMember })}
+            disabled={selectedMembers.length <= 0}
+            onPress={() => accept({ roomId, roomUsers: selectedMembers })}
           />
           <Button
             label="거절"
             size="menu"
             className="bg-error"
-            disabled={selectedMember === -1}
-            onPress={() => deny({ roomId, roomUserId: selectedMember })}
+            disabled={selectedMembers.length <= 0}
+            onPress={() => deny({ roomId, roomUsers: selectedMembers })}
           />
         </View>
       </View>
@@ -51,8 +59,8 @@ export default function WaitingMemberList({ roomId }: WaitingMemberListProps) {
           <MemberCard
             member={member}
             key={member.searchId}
-            selectedMember={selectedMember}
-            onPress={() => setSelectedMember(member.roomUserId)}
+            selectedMembers={selectedMembers}
+            onPress={() => handleSelect(member.roomUserId)}
           />
         ))}
       </View>

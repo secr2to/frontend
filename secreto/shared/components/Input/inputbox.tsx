@@ -9,6 +9,7 @@ interface InputboxProps {
   className?: string;
   readonly?: boolean;
   activeBorder?: boolean;
+  multiline?: boolean;
 }
 
 export default function Inputbox({
@@ -18,18 +19,21 @@ export default function Inputbox({
   className,
   readonly = false,
   activeBorder = true,
+  multiline = false,
 }: InputboxProps) {
   return (
     <View
       className={clsx(
-        "bg-base-background relative w-full p-2 h-[36px] border rounded-[4px] border-grayLight",
+        "bg-base-background relative w-full p-2 border rounded-[4px] border-grayLight",
         value && activeBorder && "border-b-[3px] border-b-active-background",
+        multiline ? "h-auto" : "h-[36px]",
         className
       )}
     >
       <TextInput
         className="flex w-full items-center focus:outline-none text-center text-[16px] placeholder:text-grayDark"
         placeholder={placeholder}
+        multiline={multiline}
         value={value}
         onChangeText={setValue}
         aria-disabled={!setValue || readonly}

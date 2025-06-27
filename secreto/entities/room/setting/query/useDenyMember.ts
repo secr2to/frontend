@@ -6,8 +6,8 @@ export const useDenyMember = () => {
   return useMutation<
     changeMemberResponse,
     Error,
-    { roomId: string; roomUserId: number }
+    { roomId: string; roomUsers: number[] }
   >({
-    mutationFn: ({ roomId, roomUserId }) => denyMember(roomId, roomUserId),
+    mutationFn: ({ roomId, roomUsers }) => denyMember(roomId, roomUsers),
   });
 };

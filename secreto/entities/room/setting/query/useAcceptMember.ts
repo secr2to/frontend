@@ -6,8 +6,8 @@ export const useAcceptMember = () => {
   return useMutation<
     changeMemberResponse,
     Error,
-    { roomId: string; roomUserId: number }
+    { roomId: string; roomUsers: number[] }
   >({
-    mutationFn: ({ roomId, roomUserId }) => accepMember(roomId, roomUserId),
+    mutationFn: ({ roomId, roomUsers }) => accepMember(roomId, roomUsers),
   });
 };
