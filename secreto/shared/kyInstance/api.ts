@@ -3,6 +3,7 @@ import {
   getAccessToken,
   getRefreshToken,
   saveAccessToken,
+  saveRefreshToken,
 } from "@/shared/stores/storage";
 import useUserStore from "../stores/useUserStore";
 
@@ -53,8 +54,9 @@ const api = ky.create({
             isRefreshing = true;
             refreshPromise = tokenRefresh()
               .then(async (refreshResponse) => {
-                if (refreshResponse?.data?.accessToken) {
+                if (refreshResponse?.data) {
                   await saveAccessToken(refreshResponse.data.accessToken);
+                  await saveRefreshToken(refreshResponse.data.refreshToken);
                   return refreshResponse;
                 }
                 useUserStore.getState().logout();
@@ -88,11 +90,24 @@ const api = ky.create({
   },
 });
 
+if (
+  typeof AbortSignal !== "undefined" &&
+  !AbortSignal.prototype.throwIfAborted
+) {
+  AbortSignal.prototype.throwIfAborted = function () {
+    if (this.aborted) {
+      throw new DOMException("The operation was aborted.", "AbortError");
+    }
+  };
+}
+
 interface tokenRefreshResponse {
   timestamp: number;
   message: string;
   data: {
+    refreshToken: string;
     accessToken: string;
+    tokenTypoe: "Bearer";
   };
 }
 
