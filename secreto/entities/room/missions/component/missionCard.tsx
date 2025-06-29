@@ -26,7 +26,7 @@ export default function MissionCard({ mission }: MissionCardProps) {
           />
           {mission.createDate && (
             <Typography
-              label={mission.createDate}
+              label={mission.createDate.toString().split("T")[0]}
               style={TYPOGRAPHY_TYPE.SUB_REGULAR}
               color={COLOR.INACTIVE}
             />
