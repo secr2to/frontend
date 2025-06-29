@@ -6,6 +6,7 @@ interface userStore {
   user: userInfo | null;
   isLoggedIn: boolean;
   saveUser: (user: userInfo) => void;
+  updateUser: (user: Partial<userInfo>) => void;
   logout: () => void;
 }
 
@@ -23,6 +24,20 @@ const useUserStore = create<userStore>((set) => ({
       set({ isLoggedIn: true });
     } catch (error) {
       console.error("Error while saving user info:", error);
+    }
+  },
+  updateUser: (userPartial: Partial<userInfo>) => {
+    try {
+      set((prev) => ({
+        user: prev.user
+          ? {
+              ...prev.user,
+              ...userPartial,
+            }
+          : null,
+      }));
+    } catch (error) {
+      console.error("Error while updating user info:", error);
     }
   },
   logout: async () => {
