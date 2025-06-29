@@ -14,7 +14,6 @@ export type userInfo = {
   provider: string;
   role: string;
   email: string;
-  nickname: string;
   profileUrl: string;
   searchId: string;
 };
