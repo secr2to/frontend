@@ -5,7 +5,7 @@ export type chatRoomsResponseData = {
   lastChattingDate: Date;
 };
 
-export type sendMessageResponseData = {
+export type message = {
   chatMessageId: number;
   writerId: number;
   content: string;
@@ -14,13 +14,31 @@ export type sendMessageResponseData = {
 };
 
 export type sendMessageResponse = {
-  data: sendMessageResponseData;
+  data: message;
   message: string;
   timestamp: number;
 };
 
 export type chatRoomsResponse = {
   data: chatRoomsResponseData[];
+  message: string;
+  timestamp: number;
+};
+
+export type chattingMembersInfo = {
+  chattingRoomId: number;
+  chattingRoomType: "ALL" | "MANITO" | "MANITI";
+  lastChattingDate: Date;
+  participationInfoList: participant[];
+};
+
+export type participant = {
+  roomUserId: number;
+  nickname: string;
+};
+
+export type chattingMemebersResponse = {
+  data: chattingMembersInfo[];
   message: string;
   timestamp: number;
 };
@@ -32,4 +50,10 @@ export type chattingMessageType = {
   readYn: boolean;
   writeDate: Date;
   writerId: number;
+};
+
+export type chattingMessagesResponse = {
+  data: message[];
+  message: string;
+  timestamp: number;
 };

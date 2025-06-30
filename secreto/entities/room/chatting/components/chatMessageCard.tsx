@@ -1,12 +1,12 @@
-import { Profile, Typography } from "@/shared/components";
+import { Typography } from "@/shared/components";
 import { View } from "react-native";
 import { clsx } from "@/shared/utils";
-import { chattingMessageType } from "../type/type";
+import { message } from "../type/type";
 import { format } from "date-fns";
 
 interface ChatMessageCardProps {
   isSender?: boolean;
-  messageData: chattingMessageType;
+  messageData: message;
   name?: string;
   type?: "ALL" | "MANITO" | "MANITI";
   time?: Date;
@@ -14,7 +14,7 @@ interface ChatMessageCardProps {
 
 export default function ChatMessageCard({
   isSender = true,
-  name = "익명",
+  name = "",
   type,
   time,
   messageData,
@@ -31,10 +31,9 @@ export default function ChatMessageCard({
       const minutes = date.getMinutes();
       const period = hours < 12 ? "오전" : "오후";
       const formattedHours = hours % 12 || 12;
-      return format(date, "yy/MM/dd HH:mm");
-      // return `${period} ${formattedHours}:${minutes
-      //   .toString()
-      //   .padStart(2, "0")}`;
+      return `${period} ${formattedHours}:${minutes
+        .toString()
+        .padStart(2, "0")}`;
     } else {
       return format(date, "yy/MM/dd HH:mm");
     }
@@ -43,7 +42,7 @@ export default function ChatMessageCard({
   return (
     <View
       className={clsx(
-        "flex flex-row w-full items-end gap-2 pr-2",
+        "flex flex-row w-full items-end gap-2 p-2",
         isSender && "justify-end"
       )}
     >
@@ -58,7 +57,9 @@ export default function ChatMessageCard({
           isSender ? "max-w-[70%]" : "max-w-[60%]"
         )}
       >
-        {!isSender && <Typography label={name} />}
+        {!isSender && (
+          <Typography label={type === "MANITO" ? "당신의 마니또" : name} />
+        )}
         <View className="flex flex-row items-end gap-2">
           <View
             className={clsx(
@@ -77,8 +78,8 @@ export default function ChatMessageCard({
               className={clsx(
                 "absolute w-0 h-0 border-t-[10px] border-t-transparent",
                 isSender
-                  ? "border-l-[12px] right-[-10px] top-5"
-                  : "border-r-[12px] border-r-white left-[-10px] top-5",
+                  ? "border-l-[12px] right-[-10px] top-2"
+                  : "border-r-[12px] border-r-white left-[-10px] top-2",
                 isSender && type === "ALL"
                   ? "border-l-primary"
                   : type === "MANITO"

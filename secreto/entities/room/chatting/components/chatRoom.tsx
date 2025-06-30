@@ -1,47 +1,77 @@
 import { Inputbox } from "@/shared/components";
 import { clsx } from "@/shared/utils";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { Image, Pressable, ScrollView, View } from "react-native";
 import { SocketContext } from "../../provider/socketProvider";
 import ChatMessageCard from "./chatMessageCard";
 import { useSendMessage } from "../query/useSendMessage";
-import { chattingMessageType } from "../type/type";
-import { useGetMyInfo } from "../../common/query/useGetMyInfo";
+import { participant, message } from "../type/type";
+import { myInfo } from "../../common/type/type";
 
 interface ChatRoomProps {
   type: "ALL" | "MANITO" | "MANITI";
-  roomId: number;
+  chatRoomId: number;
+  myInfo: myInfo;
+  participants?: participant[];
+  messageList: message[];
+  refetch: () => void;
 }
 
-export default function ChatRoom({ type = "ALL", roomId }: ChatRoomProps) {
-  const [messageList, setMessageList] = useState<chattingMessageType[]>([]);
+export default function ChatRoom({
+  type,
+  chatRoomId,
+  myInfo,
+  participants,
+  messageList,
+  refetch,
+}: ChatRoomProps) {
+  const [messages, setMessages] = useState<message[]>(messageList);
   const [message, setMessage] = useState<string>("");
   const { mutate } = useSendMessage();
   const socket = useContext(SocketContext);
-  const { data: myInfo } = useGetMyInfo(roomId);
+  const scrollViewRef = useRef<ScrollView>(null);
+
+  useEffect(() => {
+    refetch();
+  }, []);
 
   useEffect(() => {
     if (!socket) return;
-    socket.subscribe(`/sub/${roomId}`, (message) => {
-      const parsedMessage: chattingMessageType = JSON.parse(message.body);
-      setMessageList((prevMessage) => [...prevMessage, parsedMessage]);
+
+    socket.subscribe(`/sub/${chatRoomId}`, (message) => {
+      const parsedMessage: message = JSON.parse(message.body);
+      setMessages((prevMessage) => [...prevMessage, parsedMessage]);
     });
 
     return () => {
-      socket.unsubscribe(`/sub/${roomId}`);
+      socket.unsubscribe(`/sub/${chatRoomId}`);
     };
   }, [socket]);
+
+  useEffect(() => {
+    if (scrollViewRef.current) {
+      scrollViewRef.current.scrollToEnd();
+    }
+  }, [messages]);
 
   return (
     <View className={clsx("z-0 flex-1")}>
       <View className="flex-1 pb-16">
-        <ScrollView>
-          <View className="flex flex-col gap-5">
-            {messageList.map((messageData, idx) => (
+        <ScrollView ref={scrollViewRef}>
+          <View className="flex flex-col gap-2">
+            {messages.map((messageData, idx) => (
               <ChatMessageCard
                 type={type}
-                isSender={messageData.writerId === myInfo?.roomUserId}
-                key={messageData.chattingMessageId}
+                isSender={messageData.writerId === myInfo.roomUserId}
+                name={
+                  type === "MANITO"
+                    ? "당신의 마니또"
+                    : participants?.find(
+                        (participant) =>
+                          participant.roomUserId === messageData.writerId
+                      )?.nickname
+                }
+                key={idx.toString()}
                 messageData={messageData}
               />
             ))}
@@ -73,8 +103,8 @@ export default function ChatRoom({ type = "ALL", roomId }: ChatRoomProps) {
             disabled={!message.trim()}
             onPress={() => {
               mutate({
-                roomId: roomId,
-                writerId: 1,
+                roomId: chatRoomId,
+                writerId: myInfo.roomUserId,
                 content: message,
               });
               setMessage("");
