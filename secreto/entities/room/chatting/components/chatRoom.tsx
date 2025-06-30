@@ -3,8 +3,10 @@ import { clsx } from "@/shared/utils";
 import { useContext, useEffect, useState } from "react";
 import { Image, Pressable, ScrollView, View } from "react-native";
 import { SocketContext } from "../../provider/socketProvider";
-import useUserStore from "@/shared/stores/useUserStore";
 import ChatMessageCard from "./chatMessageCard";
+import { useSendMessage } from "../query/useSendMessage";
+import { chattingMessageType } from "../type/type";
+import { useGetMyInfo } from "../../common/query/useGetMyInfo";
 
 interface ChatRoomProps {
   type: "ALL" | "MANITO" | "MANITI";
@@ -12,16 +14,17 @@ interface ChatRoomProps {
 }
 
 export default function ChatRoom({ type = "ALL", roomId }: ChatRoomProps) {
-  const [messageList, setMessageList] = useState<string[]>([]);
+  const [messageList, setMessageList] = useState<chattingMessageType[]>([]);
   const [message, setMessage] = useState<string>("");
+  const { mutate } = useSendMessage();
   const socket = useContext(SocketContext);
-  const user = useUserStore((state) => state.user);
+  const { data: myInfo } = useGetMyInfo(roomId);
+
   useEffect(() => {
     if (!socket) return;
     socket.subscribe(`/sub/${roomId}`, (message) => {
-      const parsedMessage = JSON.parse(message.body);
-      console.log(parsedMessage);
-      setMessageList((prev) => [...prev, parsedMessage.message]);
+      const parsedMessage: chattingMessageType = JSON.parse(message.body);
+      setMessageList((prevMessage) => [...prevMessage, parsedMessage]);
     });
 
     return () => {
@@ -34,12 +37,12 @@ export default function ChatRoom({ type = "ALL", roomId }: ChatRoomProps) {
       <View className="flex-1 pb-16">
         <ScrollView>
           <View className="flex flex-col gap-5">
-            {messageList.map((message, idx) => (
+            {messageList.map((messageData, idx) => (
               <ChatMessageCard
                 type={type}
-                isSender={true}
-                key={idx}
-                message={message}
+                isSender={messageData.writerId === myInfo?.roomUserId}
+                key={messageData.chattingMessageId}
+                messageData={messageData}
               />
             ))}
           </View>
@@ -69,12 +72,10 @@ export default function ChatRoom({ type = "ALL", roomId }: ChatRoomProps) {
           <Pressable
             disabled={!message.trim()}
             onPress={() => {
-              socket?.publish({
-                destination: `/sub/${roomId}`, // Specify the destination topic
-                body: JSON.stringify({
-                  message: message,
-                  senderId: user?.searchId,
-                }),
+              mutate({
+                roomId: roomId,
+                writerId: 1,
+                content: message,
               });
               setMessage("");
             }}

@@ -1,23 +1,45 @@
 import { Profile, Typography } from "@/shared/components";
 import { View } from "react-native";
 import { clsx } from "@/shared/utils";
+import { chattingMessageType } from "../type/type";
+import { format } from "date-fns";
+
 interface ChatMessageCardProps {
-  imageUri?: string;
   isSender?: boolean;
-  message: string;
+  messageData: chattingMessageType;
   name?: string;
   type?: "ALL" | "MANITO" | "MANITI";
   time?: Date;
 }
 
 export default function ChatMessageCard({
-  imageUri = "1",
   isSender = true,
   name = "익명",
   type,
   time,
-  message = "",
+  messageData,
 }: ChatMessageCardProps) {
+  const formatDate = (date: Date) => {
+    const now = new Date();
+    const isToday =
+      date.getFullYear() === now.getFullYear() &&
+      date.getMonth() === now.getMonth() &&
+      date.getDate() === now.getDate();
+
+    if (isToday) {
+      const hours = date.getHours();
+      const minutes = date.getMinutes();
+      const period = hours < 12 ? "오전" : "오후";
+      const formattedHours = hours % 12 || 12;
+      return format(date, "yy/MM/dd HH:mm");
+      // return `${period} ${formattedHours}:${minutes
+      //   .toString()
+      //   .padStart(2, "0")}`;
+    } else {
+      return format(date, "yy/MM/dd HH:mm");
+    }
+  };
+
   return (
     <View
       className={clsx(
@@ -25,20 +47,15 @@ export default function ChatMessageCard({
         isSender && "justify-end"
       )}
     >
-      {!isSender && imageUri && (
-        <View>
-          <Profile imageUri={imageUri} size="medium" />
-        </View>
-      )}
       {isSender && (
         <View className="flex items-end">
-          <Typography label={time?.toISOString() || "2025-08-20"} />
+          <Typography label={formatDate(new Date(messageData.writeDate))} />
         </View>
       )}
       <View
         className={clsx(
           "flex flex-col gap-2 max-w-[60%]",
-          isSender ? "max-w-[75%]" : "max-w-[60%]"
+          isSender ? "max-w-[70%]" : "max-w-[60%]"
         )}
       >
         {!isSender && <Typography label={name} />}
@@ -55,7 +72,7 @@ export default function ChatMessageCard({
                 : "bg-white self-end"
             )}
           >
-            <Typography label={message} />
+            <Typography label={messageData.content} />
             <View
               className={clsx(
                 "absolute w-0 h-0 border-t-[10px] border-t-transparent",
@@ -72,7 +89,7 @@ export default function ChatMessageCard({
           </View>
           {!isSender && (
             <View className="flex items-end flex-grow-[1]">
-              <Typography label={time?.toISOString() || "2025/08/20"} />
+              <Typography label={formatDate(new Date(messageData.writeDate))} />
             </View>
           )}
         </View>
