@@ -1,14 +1,13 @@
 export type myInfo = {
-  roomUserId: number;
   managerYn: boolean;
-  standbyYn: boolean;
   nickname: string;
-  useProfileYn: boolean;
-  selfIntroduction: string;
   profileUrl: string;
-  skinColorRgb: string;
-  clothesColorRgb: string;
+  roomCharacterUrl: string;
+  roomUserId: number;
   searchId: string;
+  selfIntroduction: string;
+  standbyYn: boolean;
+  useProfileYn: boolean;
 };
 
 export type getMyInfoResponse = {
