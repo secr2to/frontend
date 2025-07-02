@@ -11,6 +11,7 @@ import alarm from "@/shared/images/alarm.png";
 import { useEffect, useState } from "react";
 import React from "react";
 import { canGoBack } from "expo-router/build/global-state/routing";
+import { router } from "expo-router";
 
 export const BackButton = () => {
   const navigation = useNavigation();
@@ -57,10 +58,10 @@ export const Alarm = ({ notice = 0 }: { notice?: number }) => {
     <Pressable
       className="px-5 py-2"
       onPress={() => {
-        //TODO: history page redirect
+        router.push("/(afterLogin)/notification");
       }}
     >
-      <Image source={alarm} style={{ width: 30, height: 30 }} />
+      <Image source={alarm} className="size-6" />
       {noticeLabel && (
         <View className="absolute flex items-center justify-center size-6 inset-0 left-[30px] bg-error rounded-full">
           <Typography
