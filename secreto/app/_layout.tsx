@@ -2,14 +2,23 @@ import { Stack } from "expo-router";
 import "@/global.css";
 import "@/shared/fonts/pretendard.css";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { ActivityIndicator, StatusBar } from "react-native";
+import { ActivityIndicator, Image, StatusBar, View } from "react-native";
 import useUserStore from "@/shared/stores/useUserStore";
 import { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { getUserInfo } from "@/entities/users/api";
+import GlobalErrorBoundary from "@/shared/bound/globalErrorBoundary";
+import HttpErrorBoundary from "@/shared/bound/httpErrorBoundary";
+import LocalErrorBoundary from "@/shared/bound/localErrorBoundary";
 
 export default function RootLayout() {
-  const queryClient = new QueryClient();
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        throwOnError: true,
+      },
+    },
+  });
   const [isLoading, setIsLoading] = useState(true);
   const saveUser = useUserStore((state) => state.saveUser);
   const logout = useUserStore((state) => state.logout);
@@ -42,14 +51,20 @@ export default function RootLayout() {
   }
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <Stack screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="index" />
-        <Stack.Screen name="(beforeLogin)" />
-        <Stack.Screen name="(afterLogin)" />
-        <Stack.Screen name="+not-found" />
-      </Stack>
-      <StatusBar />
-    </QueryClientProvider>
+    <GlobalErrorBoundary>
+      <HttpErrorBoundary>
+        <LocalErrorBoundary>
+          <QueryClientProvider client={queryClient}>
+            <Stack screenOptions={{ headerShown: false }}>
+              <Stack.Screen name="index" />
+              <Stack.Screen name="(beforeLogin)" />
+              <Stack.Screen name="(afterLogin)" />
+              <Stack.Screen name="+not-found" />
+            </Stack>
+            <StatusBar />
+          </QueryClientProvider>
+        </LocalErrorBoundary>
+      </HttpErrorBoundary>
+    </GlobalErrorBoundary>
   );
 }

@@ -1,5 +1,6 @@
 import { api } from "@/shared/kyInstance";
 import { changeMemberResponse, getMembersResponse } from "../type/type";
+import { HttpError } from "@/shared/error";
 
 export const getRoomMembers = async (
   roomId: string
@@ -9,8 +10,7 @@ export const getRoomMembers = async (
 
     return response.json();
   } catch (error) {
-    console.error("Error while accepting member:", error);
-    throw error;
+    throw new HttpError("Network Failed to fetch Room Members");
   }
 };
 
@@ -27,8 +27,7 @@ export const accepMember = async (
 
     return response.json();
   } catch (error) {
-    console.error("Error while accepting member:", error);
-    throw error;
+    throw new HttpError("Failed to accept member");
   }
 };
 
@@ -45,7 +44,6 @@ export const denyMember = async (
 
     return response.json();
   } catch (error) {
-    console.error("Error while denying member:", error);
-    throw error;
+    throw new HttpError("Failed to deny member");
   }
 };

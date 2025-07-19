@@ -1,5 +1,6 @@
 import { api } from "@/shared/kyInstance";
 import { getMyInfoResponse } from "../type/type";
+import { HttpError } from "@/shared/error";
 
 export const getMyInfo = async (roomId: string): Promise<getMyInfoResponse> => {
   try {
@@ -7,7 +8,6 @@ export const getMyInfo = async (roomId: string): Promise<getMyInfoResponse> => {
 
     return response.json();
   } catch (error) {
-    console.error("Error while getMyInfo", error);
-    throw error;
+    throw new HttpError("Network Failed to fetch My Info");
   }
 };

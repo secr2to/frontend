@@ -1,5 +1,6 @@
 import { api } from "@/shared/kyInstance";
-import { chatRoomsResponse, chattingMemebersResponse } from "../type/type";
+import { chattingMemebersResponse } from "../type/type";
+import { HttpError } from "@/shared/error";
 
 export const getChattingMemebers = async (
   roomId: string
@@ -8,7 +9,6 @@ export const getChattingMemebers = async (
     const response = await api.get(`rooms/${roomId}/chattings`);
     return response.json();
   } catch (error) {
-    console.error("Error while fetching chatting members:", error);
-    throw error;
+    throw new HttpError("Network Failed to fetch Chatting Members");
   }
 };

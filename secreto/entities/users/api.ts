@@ -4,27 +4,26 @@ import {
   getUserLogoutResponse,
   getUserResponse,
 } from "./type";
+import { HttpError } from "@/shared/error";
 
 export const getUserToken = async (
   tempId: string
 ): Promise<getTokenResponse> => {
-  const response = await api.get(`auth/token?tempId=${tempId}`);
-
-  if (!response.ok) {
-    throw new Error("Failed to fetch user toekn");
+  try {
+    const response = await api.get(`auth/token?tempId=${tempId}`);
+    return response.json();
+  } catch (error) {
+    throw new HttpError("Failed to fetch user token");
   }
-
-  return response.json();
 };
 
 export const getUserInfo = async (): Promise<getUserResponse> => {
-  const response = await api.get(`users/basic`);
-
-  if (!response.ok) {
-    throw new Error("Failed to fetch user data");
+  try {
+    const response = await api.get(`users/basic`);
+    return response.json();
+  } catch (error) {
+    throw new HttpError("Failed to fetch user info");
   }
-
-  return response.json();
 };
 
 export const logout = async (): Promise<getUserLogoutResponse> => {
@@ -33,7 +32,6 @@ export const logout = async (): Promise<getUserLogoutResponse> => {
 
     return response.json();
   } catch (error) {
-    console.error("Error while logging out user:", error);
-    throw error;
+    throw new HttpError("Failed to log out user");
   }
 };

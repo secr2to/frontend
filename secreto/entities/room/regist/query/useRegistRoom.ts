@@ -6,6 +6,7 @@ import { router } from "expo-router";
 export const useRegistRoom = () => {
   return useMutation<registRoomResponse, Error, FormData>({
     mutationFn: (roomData) => postRegistRoom(roomData),
+    throwOnError: true,
     onSuccess: (response) => {
       router.replace(
         `/(afterLogin)/room/${response.data.roomId}/(beforeStart)`
