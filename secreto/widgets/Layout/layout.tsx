@@ -48,6 +48,7 @@ export default function Layout({
           name={item.path}
           initialParams={{ roomId }}
           options={{
+            headerShown: item.label !== "피드",
             headerTitle: () => <CustomTitle />,
             headerLeft: () => <BackButton />,
             headerRight: () => <Alarm />,
