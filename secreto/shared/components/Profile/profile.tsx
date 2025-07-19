@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Image, Text, ImageSourcePropType } from "react-native";
+import { View, Image, ImageSourcePropType } from "react-native";
 import { clsx } from "../../utils";
 import { PROFILE_SIZE } from "./constant";
 import { imageStyle } from "./styles";
@@ -30,12 +30,13 @@ const Profile = ({
       <Image
         source={
           isLoading
-            ? require("@/shared/images/default.png")
+            ? undefined
             : typeof imageUri === "string"
             ? { uri: imageUri }
             : imageUri
         }
         style={{ width: "100%", height: "100%" }}
+        className={clsx(isLoading && "bg-inactive-background animate-pulse")}
         resizeMode={resizeMode}
         onLoadEnd={() => setIsLoading(false)}
       />
