@@ -1,5 +1,6 @@
 import { api } from "@/shared/kyInstance";
 import { registRoomResponse } from "../type/type";
+import { HttpError } from "@/shared/error";
 
 export const postRegistRoom = async (
   roomData: FormData
@@ -14,7 +15,6 @@ export const postRegistRoom = async (
 
     return response.json();
   } catch (error) {
-    console.error("Error while room registration:", error);
-    throw error;
+    throw new HttpError("Network error while registering room");
   }
 };

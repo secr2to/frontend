@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useState } from "react";
+import React, { Dispatch, SetStateAction, useRef } from "react";
 import { View, TextInput } from "react-native";
 import { clsx } from "../../utils";
 
@@ -21,6 +21,7 @@ export default function Inputbox({
   activeBorder = true,
   multiline = false,
 }: InputboxProps) {
+  const inputRef = useRef<TextInput>(null);
   return (
     <View
       className={clsx(
@@ -29,8 +30,10 @@ export default function Inputbox({
         multiline ? "h-auto" : "h-[36px]",
         className
       )}
+      onTouchStart={() => inputRef.current?.focus()} // Focus on touch
     >
       <TextInput
+        ref={inputRef}
         className="flex w-full items-center focus:outline-none text-center text-[16px] placeholder:text-grayDark"
         placeholder={placeholder}
         multiline={multiline}

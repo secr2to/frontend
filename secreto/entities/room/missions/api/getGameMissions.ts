@@ -1,5 +1,6 @@
 import { api } from "@/shared/kyInstance";
 import { getMissionsResponse } from "../type/type";
+import { HttpError } from "@/shared/error";
 
 export const getGameMissions = async (
   roomId: string,
@@ -17,7 +18,6 @@ export const getGameMissions = async (
 
     return response.json();
   } catch (error) {
-    console.error("Error fetching missions:", error);
-    throw error;
+    throw new HttpError("Network Failed to fetch Game Missions");
   }
 };

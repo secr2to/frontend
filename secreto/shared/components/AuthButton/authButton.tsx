@@ -15,7 +15,7 @@ export default function AuthButton({ provider, onPress }: AuthButtonProps) {
     <Pressable
       onPress={onPress}
       className={clsx(
-        "flex items-center justify-center h-[50px] rounded-[5px] overflow-hidden",
+        "flex items-center justify-center h-[50px] rounded-[5px] overflow-hidden active:opacity-80",
         containerStyle(provider)
       )}
     >

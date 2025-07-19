@@ -1,5 +1,6 @@
 import { api } from "@/shared/kyInstance";
 import { getRoomInfoResponse } from "../type/type";
+import { HttpError } from "@/shared/error";
 
 export const getRoomInfo = async (
   roomId: string
@@ -9,7 +10,6 @@ export const getRoomInfo = async (
 
     return reponse.json();
   } catch (error) {
-    console.error("Error while fetching room info:", error);
-    throw error;
+    throw new HttpError("Network Failed to fetch Room Info");
   }
 };

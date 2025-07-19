@@ -4,6 +4,7 @@ import { router } from "expo-router";
 import { Image, ImageSourcePropType, Pressable, View } from "react-native";
 import { roomStatus } from "../type/type";
 import { useState } from "react";
+import { clsx } from "@/shared/utils";
 
 interface RoomCardProps {
   roomId: number;
@@ -55,12 +56,15 @@ export default function RoomCard({
           <Image
             source={
               loading
-                ? require("@/shared/images/default.png")
+                ? undefined
                 : typeof imageUrl === "string"
                 ? { uri: imageUrl }
                 : imageUrl
             }
-            className="w-[80px] h-[80px] rounded-[5px] border border-inactive-background"
+            className={clsx(
+              "w-[80px] h-[80px] rounded-[5px] border border-inactive-background",
+              loading && "bg-inactive-background animate-pulse"
+            )}
             resizeMode="cover"
             onLoadEnd={() => setLoading(false)}
           />
