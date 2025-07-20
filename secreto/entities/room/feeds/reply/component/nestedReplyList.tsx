@@ -1,22 +1,26 @@
 import { useGetReplies } from "../query/useGetReplies";
 import { FlashList } from "@shopify/flash-list";
-import Reply from "./reply";
 import { Spacing } from "@/shared/components";
+import NestedReply from "./nestedReply";
 
-interface ReplyListProps {
+interface NestedReplyListProps {
   roomId: string;
   feedId: number;
+  replyId: number;
 }
 
-export default function ReplyList({ roomId, feedId }: ReplyListProps) {
-  const { data: reply } = useGetReplies(roomId, feedId);
+export default function NestedReplyList({
+  roomId,
+  feedId,
+  replyId,
+}: NestedReplyListProps) {
+  const { data: reply } = useGetReplies(roomId, feedId, replyId);
 
   return (
     <FlashList
       data={reply}
-      renderItem={({ item }) => (
-        <Reply reply={item} feedId={feedId} roomId={roomId} />
-      )}
+      renderItem={({ item }) => <NestedReply reply={item} />}
+      contentContainerStyle={{ paddingLeft: 20 }}
       keyExtractor={(item) => item.replyId.toString()}
       estimatedItemSize={100}
       ItemSeparatorComponent={() => <Spacing size={8} />}

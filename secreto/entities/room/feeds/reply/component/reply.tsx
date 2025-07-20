@@ -1,14 +1,11 @@
 import { Pressable, View } from "react-native";
 import { reply } from "../type/type";
 import { Profile, Typography } from "@/shared/components";
-import {
-  COLOR,
-  TYPOGRAPHY_TYPE,
-} from "@/shared/components/Typography/constant";
+import { TYPOGRAPHY_TYPE } from "@/shared/components/Typography/constant";
 import HeartIcon from "@/shared/components/Icons/heart";
 import { Suspense, useState } from "react";
 import ReplyListFallback from "./replyListFallback";
-import ReplyList from "./replyList";
+import NestedReplyList from "./nestedReplyList";
 
 interface ReplyProps {
   reply: reply;
@@ -33,15 +30,6 @@ export default function Reply({ reply, roomId, feedId }: ReplyProps) {
               label={reply.replier.roomNickname}
               style={TYPOGRAPHY_TYPE.SUB_BOLD}
             />
-            <Typography
-              label={reply.replier.searchId}
-              className="max-w-[80px] line-clamp-1"
-              style={TYPOGRAPHY_TYPE.BODY_REGULAR}
-              color={COLOR.INACTIVE}
-            />
-          </View>
-
-          <View className="flex-1 gap-1">
             <Typography label={reply.content} />
             {!reply.nestedReplyYn && (
               <Pressable
@@ -69,7 +57,7 @@ export default function Reply({ reply, roomId, feedId }: ReplyProps) {
         {openReplies && (
           <>
             <Suspense fallback={<ReplyListFallback />}>
-              <ReplyList
+              <NestedReplyList
                 roomId={roomId}
                 feedId={feedId}
                 replyId={reply.replyId}
