@@ -13,8 +13,8 @@ import { useLocalSearchParams } from "expo-router";
 import { useState } from "react";
 import { ActivityIndicator, Image, View } from "react-native";
 import { useGameStart } from "@/entities/room/setting/query/useGameStart";
-import { useGetRoomMembers } from "@/entities/room/setting/query/useGetRoomMembers";
 import useUserStore from "@/shared/stores/useUserStore";
+import { useGetRoomMembersInfo } from "@/entities/room/participants/query/useGetRoomMebersInfo";
 
 export default function SettingRoom() {
   const { roomId } = useLocalSearchParams() as { roomId: string };
@@ -23,7 +23,7 @@ export default function SettingRoom() {
   const [allMissionList, setAllMissionList] = useState<string[]>([]);
   const [selectedMissions, setSelectedMissions] = useState<string[]>([]);
   const [step, setStep] = useState<string>("info");
-  const { data: members } = useGetRoomMembers(roomId);
+  const { data: members } = useGetRoomMembersInfo(roomId);
   const user = useUserStore((state) => state.user);
   const { mutate: gameStart } = useGameStart();
 

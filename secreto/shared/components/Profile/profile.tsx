@@ -9,6 +9,7 @@ interface ProfileProps {
   size?: (typeof PROFILE_SIZE)[keyof typeof PROFILE_SIZE];
   className?: string;
   resizeMode?: "cover" | "contain" | "stretch" | "repeat" | "center";
+  defaultSource?: ImageSourcePropType;
 }
 
 const Profile = ({
@@ -16,8 +17,8 @@ const Profile = ({
   size = PROFILE_SIZE.MEDIUM,
   className,
   resizeMode = "cover",
+  defaultSource,
 }: ProfileProps) => {
-  const [isLoading, setIsLoading] = useState(true);
   return (
     <View
       className={clsx(
@@ -28,17 +29,14 @@ const Profile = ({
       )}
     >
       <Image
-        source={
-          isLoading
-            ? undefined
-            : typeof imageUri === "string"
-            ? { uri: imageUri }
-            : imageUri
+        source={typeof imageUri === "string" ? { uri: imageUri } : imageUri}
+        defaultSource={
+          defaultSource
+            ? defaultSource
+            : require("@/shared/images/defaultProfile.png")
         }
         style={{ width: "100%", height: "100%" }}
-        className={clsx(isLoading && "bg-inactive-background animate-pulse")}
         resizeMode={resizeMode}
-        onLoadEnd={() => setIsLoading(false)}
       />
     </View>
   );

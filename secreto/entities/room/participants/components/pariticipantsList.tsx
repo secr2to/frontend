@@ -4,17 +4,19 @@ import { Spacing } from "@/shared/components";
 import ParticipantCard from "./participantCard";
 import useUserStore from "@/shared/stores/useUserStore";
 import { useState } from "react";
-import { roomMember } from "../../setting/type/type";
-import { useSuspenseGetRoomMembers } from "../query/useGetRoomMebers";
+import { useGetRoomMembersInfo } from "../query/useGetRoomMebersInfo";
 import RoomUserPopup from "./roomUserPopup";
+import { useGetRoomMembersProfile } from "../query/useGetRoomMembersProfile";
+import { roomMemberInfo } from "../type/type";
 
 type ParticipantsListProps = {
   roomId: string;
 };
 export default function ParticipantsList({ roomId }: ParticipantsListProps) {
-  const { data: participants } = useSuspenseGetRoomMembers(roomId);
+  const { data: participantsProfile } = useGetRoomMembersProfile(roomId);
+  const { data: participants } = useGetRoomMembersInfo(roomId);
   const user = useUserStore((state) => state.user);
-  const [roomUser, setRoomUser] = useState<roomMember | null>(null);
+  const [roomUser, setRoomUser] = useState<roomMemberInfo | null>(null);
   return (
     <>
       <View className="flex-1 p-1">
@@ -24,7 +26,11 @@ export default function ParticipantsList({ roomId }: ParticipantsListProps) {
           numColumns={2}
           renderItem={({ item }) => (
             <ParticipantCard
-              imageUri={item.profileUrl ?? item.roomCharacterUrl}
+              imageUri={
+                participantsProfile.find(
+                  (profile) => profile.roomUserId === item.roomUserId
+                )?.profileUrl || ""
+              }
               name={item.nickname}
               searchId={item.searchId}
               isMe={item.searchId === user?.searchId}

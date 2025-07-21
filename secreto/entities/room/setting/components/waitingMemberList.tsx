@@ -1,19 +1,21 @@
 import { Button, Typography } from "@/shared/components";
 import { TYPOGRAPHY_TYPE } from "@/shared/components/Typography/constant";
 import { View } from "react-native";
-import { useGetRoomMembers } from "../query/useGetRoomMembers";
 import { useEffect, useState } from "react";
-import { roomMember } from "../type/type";
 import MemberCard from "./memberCard";
 import { useDenyMember } from "../query/useDenyMember";
 import { useAcceptMember } from "../query/useAcceptMember";
+import { useGetRoomMembersInfo } from "../../participants/query/useGetRoomMebersInfo";
+import { roomMemberInfo } from "../../participants/type/type";
+import { useGetRoomMembersProfile } from "../../participants/query/useGetRoomMembersProfile";
 
 interface WaitingMemberListProps {
   roomId: string;
 }
 export default function WaitingMemberList({ roomId }: WaitingMemberListProps) {
-  const { data: members } = useGetRoomMembers(roomId);
-  const [waitingMember, setWaitingMember] = useState<roomMember[]>([]);
+  const { data: members } = useGetRoomMembersInfo(roomId);
+  const { data: membersProfile } = useGetRoomMembersProfile(roomId);
+  const [waitingMember, setWaitingMember] = useState<roomMemberInfo[]>([]);
   const [selectedMembers, setSelectedMembers] = useState<number[]>([]);
   const { mutate: deny } = useDenyMember();
   const { mutate: accept } = useAcceptMember();
@@ -57,6 +59,11 @@ export default function WaitingMemberList({ roomId }: WaitingMemberListProps) {
       <View className="flex flex-col gap-2">
         {waitingMember?.map((member) => (
           <MemberCard
+            profileImage={
+              membersProfile?.find(
+                (profile) => profile.roomUserId === member.roomUserId
+              )?.profileUrl || ""
+            }
             member={member}
             key={member.searchId}
             selectedMembers={selectedMembers}

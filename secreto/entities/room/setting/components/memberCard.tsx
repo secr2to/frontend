@@ -1,14 +1,15 @@
 import { Profile, Typography } from "@/shared/components";
 import { Pressable, View } from "react-native";
-import { roomMember } from "../type/type";
 import {
   COLOR,
   TYPOGRAPHY_TYPE,
 } from "@/shared/components/Typography/constant";
 import { clsx } from "@/shared/utils";
+import { roomMemberInfo } from "../../participants/type/type";
 
 interface MemberCardProps {
-  member: roomMember;
+  profileImage: string;
+  member: roomMemberInfo;
   selectedMembers?: number[];
   onPress?: () => void;
 }
@@ -16,6 +17,7 @@ export default function MemberCard({
   member,
   selectedMembers,
   onPress,
+  profileImage,
 }: MemberCardProps) {
   return (
     <Pressable onPress={onPress}>
@@ -27,13 +29,7 @@ export default function MemberCard({
             : "bg-grayLight"
         )}
       >
-        <Profile
-          imageUri={
-            member.profileUrl ? member.profileUrl : member.roomCharacterUrl
-          }
-          size="medium"
-          resizeMode="cover"
-        />
+        <Profile imageUri={profileImage} size="medium" resizeMode="cover" />
         <View className="flex flex-col gap-2">
           <Typography
             label={member.nickname}

@@ -1,10 +1,11 @@
 import { Typography } from "@/shared/components";
 import { TYPOGRAPHY_TYPE } from "@/shared/components/Typography/constant";
 import { View } from "react-native";
-import { useGetRoomMembers } from "../query/useGetRoomMembers";
 import { useEffect, useState } from "react";
 import MemberCard from "./memberCard";
-import { roomMember } from "../type/type";
+import { roomMemberInfo } from "../../participants/type/type";
+import { useGetRoomMembersProfile } from "../../participants/query/useGetRoomMembersProfile";
+import { useGetRoomMembersInfo } from "../../participants/query/useGetRoomMebersInfo";
 
 interface AcceptedMemberListProps {
   roomId: string;
@@ -13,8 +14,10 @@ interface AcceptedMemberListProps {
 export default function AcceptedMemberList({
   roomId,
 }: AcceptedMemberListProps) {
-  const { data: members } = useGetRoomMembers(roomId);
-  const [acceptedMember, setAcceptedMember] = useState<roomMember[]>([]);
+  const { data: members } = useGetRoomMembersInfo(roomId);
+  const [acceptedMember, setAcceptedMember] = useState<roomMemberInfo[]>([]);
+  const { data: membersProfile } = useGetRoomMembersProfile(roomId);
+
   useEffect(() => {
     if (!members) return;
     setAcceptedMember(members.filter((member) => member.standbyYn === false));
@@ -30,7 +33,15 @@ export default function AcceptedMemberList({
       </View>
       <View className="flex flex-col gap-2">
         {acceptedMember?.map((member) => (
-          <MemberCard member={member} key={member.searchId} />
+          <MemberCard
+            profileImage={
+              membersProfile?.find(
+                (profile) => profile.roomUserId === member.roomUserId
+              )?.profileUrl || ""
+            }
+            member={member}
+            key={member.searchId}
+          />
         ))}
       </View>
     </View>
