@@ -1,23 +1,3 @@
-export type roomMember = {
-  roomUserId: number;
-  managerYn: boolean;
-  standbyYn: boolean;
-  nickname: string;
-  useProfileYn: boolean;
-  selfIntroduction: string;
-  profileUrl: string;
-  skinColorRgb: string;
-  clothesColorRgb: string;
-  searchId: string;
-  roomCharacterUrl: string;
-};
-
-export type getMembersResponse = {
-  timestamp: number;
-  message: string;
-  data: roomMember[];
-};
-
 export type changeRoomResponseData = {
   roomId: number;
 };

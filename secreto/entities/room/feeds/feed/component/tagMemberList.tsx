@@ -1,9 +1,10 @@
 import { View } from "react-native";
 import { useEffect, useState } from "react";
-import { useGetRoomMembers } from "@/entities/room/setting/query/useGetRoomMembers";
 import { useGetMyInfo } from "@/entities/room/common/query/useGetMyInfo";
 import MemberCard from "@/entities/room/setting/components/memberCard";
-import { roomMember } from "@/entities/room/setting/type/type";
+import { useGetRoomMembersInfo } from "@/entities/room/participants/query/useGetRoomMebersInfo";
+import { roomMemberInfo } from "@/entities/room/participants/type/type";
+import { useGetRoomMembersProfile } from "@/entities/room/participants/query/useGetRoomMembersProfile";
 
 interface TagMemberListProps {
   roomId: string;
@@ -17,9 +18,10 @@ export default function TagMemberList({
   selectedMembers,
   setSelectedMembers,
 }: TagMemberListProps) {
-  const { data: members } = useGetRoomMembers(roomId);
+  const { data: members } = useGetRoomMembersInfo(roomId);
   const { data: me } = useGetMyInfo(roomId);
-  const [tagableMembers, setTagableMembers] = useState<roomMember[]>([]);
+  const [tagableMembers, setTagableMembers] = useState<roomMemberInfo[]>([]);
+  const { data: membersProfile } = useGetRoomMembersProfile(roomId);
 
   useEffect(() => {
     if (!members) return;
@@ -52,6 +54,11 @@ export default function TagMemberList({
       <View className="flex flex-col">
         {tagableMembers?.map((member) => (
           <MemberCard
+            profileImage={
+              membersProfile?.find(
+                (profile) => profile.roomUserId === member.roomUserId
+              )?.profileUrl || ""
+            }
             member={member}
             key={member.searchId}
             selectedMembers={selectedMembers}

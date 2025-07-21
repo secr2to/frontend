@@ -24,6 +24,7 @@ export default function RoomInfoList({
               : require("@/shared/images/default.png")
           }
           resizeMode="cover"
+          defaultSource={require("@/shared/images/defaultGame.png")}
         />
       </View>
       {isManager && (
