@@ -19,7 +19,7 @@ export default function NestedReplyList({
   return (
     <FlashList
       data={reply}
-      renderItem={({ item }) => <NestedReply reply={item} />}
+      renderItem={({ item }) => <NestedReply feedId={feedId} reply={item} />}
       contentContainerStyle={{ paddingLeft: 20 }}
       keyExtractor={(item) => item.replyId.toString()}
       estimatedItemSize={100}

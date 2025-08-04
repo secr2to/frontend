@@ -9,7 +9,7 @@ import { COLOR, TYPOGRAPHY_TYPE } from "../Typography/constant";
 interface NavMenuProps {
   items: MenuItem[];
   state: string;
-  setState: Dispatch<SetStateAction<string>>;
+  setState: Dispatch<SetStateAction<MenuItem["state"]>>;
   className?: string;
 }
 

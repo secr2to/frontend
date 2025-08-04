@@ -2,7 +2,7 @@ import { commonResponse } from "@/shared/type/type";
 
 export type reply = {
   replyId: number;
-  content: string;
+  comment: string;
   createDate: Date;
   nestedReplyYn: boolean;
   nestedReplyCount: number;
@@ -27,7 +27,11 @@ export type replyData = {
   mentionUserId?: number;
 };
 
-export type getRepliesResponse = commonResponse<reply[]>;
+export type getRepliesResponse = commonResponse<{
+  content: reply[];
+  hasNext: boolean;
+  offset: number;
+}>;
 
 export type registReplyResponse = commonResponse<{ feedId: number }>;
 

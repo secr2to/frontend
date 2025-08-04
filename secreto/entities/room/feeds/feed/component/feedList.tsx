@@ -9,9 +9,12 @@ interface FeedListProps {
 }
 
 export default function FeedList({ roomId }: FeedListProps) {
-  const { data, fetchNextPage } = useGetFeeds(roomId);
+  const { data, hasNextPage, isFetchingNextPage, fetchNextPage } =
+    useGetFeeds(roomId);
+
   return (
     <FlashList
+      key={roomId}
       data={data}
       renderItem={({ item }) => <Feed feed={item} roomId={roomId} />}
       keyExtractor={(item) => item.feedId.toString()}
@@ -19,7 +22,11 @@ export default function FeedList({ roomId }: FeedListProps) {
       ListEmptyComponent={<EmptyFeed />}
       estimatedItemSize={800}
       onEndReachedThreshold={0.5}
-      onEndReached={fetchNextPage}
+      onEndReached={() => {
+        if (hasNextPage && !isFetchingNextPage) {
+          fetchNextPage();
+        }
+      }}
     />
   );
 }

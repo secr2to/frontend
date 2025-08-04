@@ -1,4 +1,7 @@
-import { useSuspenseQuery } from "@tanstack/react-query";
+import {
+  useSuspenseInfiniteQuery,
+  useSuspenseQuery,
+} from "@tanstack/react-query";
 import { getRepliesResponse, reply } from "../type/type";
 import { getReplies } from "../api/getReplies";
 
@@ -7,16 +10,20 @@ export const useGetReplies = (
   feedId: number,
   replyId?: number
 ) => {
-  return useSuspenseQuery<
+  return useSuspenseInfiniteQuery<
     getRepliesResponse,
     Error,
     reply[],
-    [_1: string, _2: number, _3: string, _4?: number]
+    [_1: string, _2: string, _3: number, _4?: number],
+    number
   >({
-    queryKey: ["getReplies", feedId, roomId, replyId],
-    queryFn: () => getReplies(feedId, roomId, replyId),
+    queryKey: ["getReplies", roomId, feedId, replyId],
+    initialPageParam: 0,
+    queryFn: ({ pageParam }) => getReplies(roomId, feedId, pageParam, replyId),
+    getNextPageParam: (lastPage) =>
+      lastPage.data.hasNext ? lastPage.data.offset : undefined,
     select: (data) => {
-      return data.data;
+      return data.pages.flatMap((page) => page.data.content);
     },
   });
 };

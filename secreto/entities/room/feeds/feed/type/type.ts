@@ -11,6 +11,7 @@ export type feed = {
   images: image[];
   createDate: Date;
   imageCount: number;
+  replyCount: number;
 };
 
 export type author = {
@@ -19,7 +20,6 @@ export type author = {
   profileUrl: string;
   roomUserId: number;
   roomNickname: string;
-  replyCount: number;
 };
 
 export type image = {

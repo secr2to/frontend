@@ -63,7 +63,9 @@ export default function RegistFeed() {
     imageFiles.forEach((file) => {
       formData.append("images", file);
     });
-    formData.append("tags", JSON.stringify(selectedTags));
+    selectedTags.forEach((tag: string) => {
+      formData.append("tags", tag);
+    });
     registFeed({ roomId, feedData: formData });
   }, [content, imageFiles, selectedTags, title, roomId]);
 

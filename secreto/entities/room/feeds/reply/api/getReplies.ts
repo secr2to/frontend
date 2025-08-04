@@ -3,14 +3,20 @@ import { getRepliesResponse } from "../type/type";
 import { HttpError } from "@/shared/error";
 
 export const getReplies = async (
-  feedId: number,
   roomId: string,
+  feedId: number,
+  offset: number,
   replyId?: number
 ): Promise<getRepliesResponse> => {
+  console.log(
+    `rooms/${roomId}/feeds/${feedId}/replies?offset=${offset}${
+      replyId ? `&replyId=${replyId}` : ""
+    }`
+  );
   try {
     const response = await api.get(
-      `rooms/${roomId}/feeds/${feedId}/replies?${
-        replyId ? `replyId=${replyId}` : ""
+      `rooms/${roomId}/feeds/${feedId}/replies?offset=${offset}${
+        replyId ? `&replyId=${replyId}` : ""
       }`
     );
 

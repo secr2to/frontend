@@ -10,6 +10,7 @@ interface ReplyListProps {
 
 export default function ReplyCount({ roomId, feedId }: ReplyListProps) {
   const { data: reply } = useGetReplies(roomId, feedId);
+  console.log("reply count", reply);
   return (
     <View>
       <Typography

@@ -9,12 +9,6 @@ export const getFeeds = async (
   try {
     const response = await api.get(`rooms/${roomId}/feeds?offset=${offset}`);
 
-    await new Promise((resolve) => {
-      setTimeout(() => {
-        resolve("Data fetched successfully");
-      }, 10000);
-    });
-
     return response.json();
   } catch (error) {
     throw new HttpError("Network Failed to fetch Feeds");
