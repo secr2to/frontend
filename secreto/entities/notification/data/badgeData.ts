@@ -1,14 +1,14 @@
 export const badgeMenu = [
   {
     label: "전체",
-    state: "all",
+    state: "ALL",
   },
   {
     label: "일주일",
-    state: "week",
+    state: "WEEK",
   },
   {
     label: "하루",
-    state: "day",
+    state: "TODAY",
   },
 ];

@@ -8,10 +8,12 @@ import {
 } from "@/shared/components/Typography/constant";
 import Secreto from "@/shared/images/secreto.svg";
 import alarm from "@/shared/images/alarm.png";
-import { useEffect, useState } from "react";
+import { Suspense } from "react";
 import React from "react";
 import { canGoBack } from "expo-router/build/global-state/routing";
 import { router } from "expo-router";
+import NoticeCountFallback from "./components/noticeCountFallback";
+import NoticeCount from "./components/noticeCount";
 
 export const BackButton = () => {
   const navigation = useNavigation();
@@ -41,19 +43,7 @@ export const CustomTitle = ({ title }: { title?: string }) => {
   );
 };
 
-export const Alarm = ({ notice = 0 }: { notice?: number }) => {
-  const [noticeLabel, setNoticeLabel] = useState<string>("");
-
-  useEffect(() => {
-    if (notice === 0) {
-      setNoticeLabel("");
-    } else if (notice < 100) {
-      setNoticeLabel(notice.toString());
-    } else {
-      setNoticeLabel("99+");
-    }
-  }, [notice]);
-
+export const Alarm = () => {
   return (
     <Pressable
       className="px-5 py-2"
@@ -62,15 +52,9 @@ export const Alarm = ({ notice = 0 }: { notice?: number }) => {
       }}
     >
       <Image source={alarm} className="size-6" />
-      {noticeLabel && (
-        <View className="absolute flex items-center justify-center size-6 inset-0 left-[30px] bg-error rounded-full">
-          <Typography
-            label={noticeLabel}
-            style={TYPOGRAPHY_TYPE.LABEL_BOLD}
-            color={COLOR.WHITE}
-          />
-        </View>
-      )}
+      <Suspense fallback={<NoticeCountFallback />}>
+        <NoticeCount />
+      </Suspense>
     </Pressable>
   );
 };

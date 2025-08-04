@@ -6,7 +6,8 @@ export type chatRoomsResponseData = {
 };
 
 export type message = {
-  chatMessageId: number;
+  chattingMessageId: number;
+  chattingRoomId: number;
   writerId: number;
   content: string;
   writeDate: Date;
