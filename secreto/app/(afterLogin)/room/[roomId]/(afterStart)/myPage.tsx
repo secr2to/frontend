@@ -8,11 +8,13 @@ import { router, useLocalSearchParams } from "expo-router";
 import { View } from "react-native";
 import { useGetMyInfo } from "@/entities/room/common/query/useGetMyInfo";
 import { useEndGame } from "@/entities/room/modify/query/useEndGame";
+import { useGetRoomMembersProfile } from "@/entities/room/participants/query/useGetRoomMembersProfile";
 
 export default function MyPage() {
   const { roomId } = useLocalSearchParams() as { roomId: string };
   const { data: user } = useGetMyInfo(roomId);
   const { mutate: endGame } = useEndGame();
+  const { data: profiles } = useGetRoomMembersProfile(roomId);
   return (
     user && (
       <View className="flex-1 bg-default-background gap-10">
@@ -23,7 +25,10 @@ export default function MyPage() {
                 <Profile
                   size="medium"
                   imageUri={
-                    user.useProfileYn ? user.profileUrl : user.roomCharacterUrl
+                    profiles.find(
+                      (profile) => profile.roomUserId === user.roomUserId
+                    )?.profileUrl ||
+                    require("@/shared/images/defaultProfile.png")
                   }
                 />
               </View>

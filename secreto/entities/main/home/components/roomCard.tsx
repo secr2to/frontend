@@ -65,7 +65,7 @@ export default function RoomCard({
               "w-[80px] h-[80px] rounded-[5px] border border-inactive-background",
               loading && "bg-inactive-background animate-pulse"
             )}
-            resizeMode="cover"
+            resizeMode="contain"
             onLoadEnd={() => setLoading(false)}
           />
         )}
@@ -73,7 +73,7 @@ export default function RoomCard({
           <Image
             source={require("@/shared/images/default.png")}
             className="w-[80px] h-[80px] rounded-[5px] border border-inactive-background"
-            resizeMode="cover"
+            resizeMode="contain"
           />
         )}
         <View className="flex-1 flex-col p-2 gap-1">

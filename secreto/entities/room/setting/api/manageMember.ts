@@ -24,7 +24,7 @@ export const denyMember = async (
   roomUsers: number[]
 ): Promise<changeMemberResponse> => {
   try {
-    const response = await api.put(`rooms/${roomId}/deny`, {
+    const response = await api.delete(`rooms/${roomId}/deny`, {
       json: {
         roomUserIds: roomUsers,
       },
