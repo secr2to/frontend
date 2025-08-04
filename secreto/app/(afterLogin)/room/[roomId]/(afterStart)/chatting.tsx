@@ -3,34 +3,21 @@ import { useGetChatRooms } from "@/entities/room/chatting/query/useGetChatRooms"
 import { useGetChattingMembers } from "@/entities/room/chatting/query/useGetChattingMemebers";
 import { useGetChattings } from "@/entities/room/chatting/query/useGetChattings";
 import { participant } from "@/entities/room/chatting/type/type";
-import { useGetMyInfo } from "@/entities/room/common/query/useGetMyInfo";
 import { NavMenu } from "@/shared/components";
+import { MenuItem } from "@/shared/components/Menus/constant";
 import { clsx } from "@/shared/utils";
 import { useLocalSearchParams } from "expo-router";
 import { useEffect, useState } from "react";
 import { View } from "react-native";
 
 export default function Chatting() {
-  const [roomType, setRoomType] = useState("ALL");
+  const [roomType, setRoomType] = useState<MenuItem["state"]>("ALL");
   const { roomId } = useLocalSearchParams() as { roomId: string };
   const { data: chatRooms } = useGetChatRooms(roomId);
-  const { data: myInfo } = useGetMyInfo(roomId);
   const { data: chattingMembers } = useGetChattingMembers(roomId);
   const [participants, setParticipants] = useState<participant[]>([]);
-  const { data: allMessages, refetch: refetchAll } = useGetChattings(
-    roomId,
-    "ALL"
-  );
-  const { data: manitoMessages, refetch: refetchManito } = useGetChattings(
-    roomId,
-    "MANITO"
-  );
-  const { data: manitiMessages, refetch: refetchManiti } = useGetChattings(
-    roomId,
-    "MANITI"
-  );
 
-  const getChatId = (type: "ALL" | "MANITO" | "MANITI") => {
+  const getChatId = (type: MenuItem["state"]) => {
     return (
       chatRooms?.filter((room) => room.type === type)[0].chattingRoomId || -1
     );
@@ -74,35 +61,16 @@ export default function Chatting() {
       />
       <NavMenu items={items} state={roomType} setState={setRoomType} />
       <View className="flex-1 p-5">
-        {roomType === "ALL" && myInfo && allMessages && (
-          <ChatRoom
-            type="ALL"
-            chatRoomId={getChatId("ALL")}
-            myInfo={myInfo}
-            participants={participants}
-            messageList={allMessages}
-            refetch={refetchAll}
-          />
-        )}
-        {roomType === "MANITO" && myInfo && manitoMessages && (
-          <ChatRoom
-            type="MANITO"
-            chatRoomId={getChatId("MANITO")}
-            myInfo={myInfo}
-            messageList={manitoMessages}
-            refetch={refetchManito}
-          />
-        )}
-        {roomType === "MANITI" && myInfo && manitiMessages && (
-          <ChatRoom
+        <ChatRoom
+          type={roomType as "ALL" | "MANITO" | "MANITI"}
+          chatRoomId={getChatId(roomType)}
+          participants={participants}
+        />
+        {/* <ChatRoom
             type="MANITI"
             chatRoomId={getChatId("MANITI")}
-            myInfo={myInfo}
             participants={participants}
-            messageList={manitiMessages}
-            refetch={refetchManiti}
-          />
-        )}
+          /> */}
       </View>
     </View>
   );
