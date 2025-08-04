@@ -18,7 +18,7 @@ import { useGetRoomMembersInfo } from "@/entities/room/participants/query/useGet
 
 export default function SettingRoom() {
   const { roomId } = useLocalSearchParams() as { roomId: string };
-  const { data: roomInfo, isLoading } = useGetRoomInfo(roomId as string);
+  const { data: roomInfo, isLoading } = useGetRoomInfo(roomId);
   const { data: isManager, isLoading: isManagerLoading } = useGetMyRole(roomId);
   const [allMissionList, setAllMissionList] = useState<string[]>([]);
   const [selectedMissions, setSelectedMissions] = useState<string[]>([]);

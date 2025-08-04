@@ -45,14 +45,20 @@ export default function WaitingMemberList({ roomId }: WaitingMemberListProps) {
             label="승인"
             size="menu"
             disabled={selectedMembers.length <= 0}
-            onPress={() => accept({ roomId, roomUsers: selectedMembers })}
+            onPress={() => {
+              accept({ roomId, roomUsers: selectedMembers });
+              setSelectedMembers([]);
+            }}
           />
           <Button
             label="거절"
             size="menu"
             className="bg-error"
             disabled={selectedMembers.length <= 0}
-            onPress={() => deny({ roomId, roomUsers: selectedMembers })}
+            onPress={() => {
+              deny({ roomId, roomUsers: selectedMembers });
+              setSelectedMembers([]);
+            }}
           />
         </View>
       </View>
@@ -67,7 +73,9 @@ export default function WaitingMemberList({ roomId }: WaitingMemberListProps) {
             member={member}
             key={member.searchId}
             selectedMembers={selectedMembers}
-            onPress={() => handleSelect(member.roomUserId)}
+            onPress={() => {
+              handleSelect(member.roomUserId);
+            }}
           />
         ))}
       </View>

@@ -8,12 +8,11 @@ import {
 } from "@/shared/components/Typography/constant";
 import Secreto from "@/shared/images/secreto.svg";
 import alarm from "@/shared/images/alarm.png";
-import { Suspense } from "react";
-import React from "react";
+import React, { Suspense } from "react";
 import { canGoBack } from "expo-router/build/global-state/routing";
 import { router } from "expo-router";
-import NoticeCountFallback from "./components/noticeCountFallback";
 import NoticeCount from "./components/noticeCount";
+import NoticeCountFallback from "./components/noticeCountFallback";
 
 export const BackButton = () => {
   const navigation = useNavigation();
