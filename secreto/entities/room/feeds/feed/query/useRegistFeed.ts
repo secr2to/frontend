@@ -10,7 +10,10 @@ export const useRegistFeed = () => {
   >({
     mutationFn: ({ roomId, feedData }) => registFeed(roomId, feedData),
     onSuccess: ({ data }) => {
+      console.log("Feed registered successfully:", data);
       console.log(data.feedId);
     },
   });
 };
+
+// images=[1, 2, 3]

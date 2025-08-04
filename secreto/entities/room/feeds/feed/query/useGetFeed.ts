@@ -14,7 +14,7 @@ export const useGetFeeds = (roomId: string) => {
     initialPageParam: 0,
     queryFn: ({ pageParam }) => getFeeds(roomId, pageParam),
     getNextPageParam: (lastPage) =>
-      lastPage.data.hasNext ? lastPage.data.offset + 1 : undefined,
+      lastPage.data.hasNext ? lastPage.data.offset : undefined,
     select: (data) => {
       return data.pages.flatMap((page) => page.data.content);
     },

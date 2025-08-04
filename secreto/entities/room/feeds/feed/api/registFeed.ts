@@ -7,13 +7,9 @@ export const registFeed = async (
   formData: FormData
 ): Promise<registFeedResponse> => {
   try {
-    const response = await api.post(
-      `community
-/rooms/${roomId}/feeds`,
-      {
-        body: formData,
-      }
-    );
+    const response = await api.post(`rooms/${roomId}/feeds`, {
+      body: formData,
+    });
 
     return response.json();
   } catch (error) {
