@@ -1,3 +1,4 @@
+import GlobalSocketProvider from "@/shared/websocket/provider/globalSocketProvider";
 import useUserStore from "@/shared/stores/useUserStore";
 import { Redirect, Stack } from "expo-router";
 
@@ -6,5 +7,9 @@ export default function Layout() {
 
   if (!isLoggedIn) return <Redirect href="/(beforeLogin)/signIn" />;
 
-  return <Stack screenOptions={{ headerShown: false }} />;
+  return (
+    <GlobalSocketProvider>
+      <Stack screenOptions={{ headerShown: false }} />
+    </GlobalSocketProvider>
+  );
 }

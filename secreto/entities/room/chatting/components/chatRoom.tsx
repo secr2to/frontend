@@ -2,51 +2,58 @@ import { Inputbox } from "@/shared/components";
 import { clsx } from "@/shared/utils";
 import { useContext, useEffect, useRef, useState } from "react";
 import { Image, Pressable, ScrollView, View } from "react-native";
-import { SocketContext } from "../../provider/socketProvider";
 import ChatMessageCard from "./chatMessageCard";
 import { useSendMessage } from "../query/useSendMessage";
-import { participant, message } from "../type/type";
-import { myInfo } from "../../common/type/type";
+import { participant, message, chattingMessagesResponse } from "../type/type";
+import { SocketContext } from "@/shared/websocket/provider/globalSocketProvider";
+import { useGetChattings } from "../query/useGetChattings";
+import { useLocalSearchParams } from "expo-router";
+import { useQueryClient } from "@tanstack/react-query";
+import { useGetMyInfo } from "../../common/query/useGetMyInfo";
 
 interface ChatRoomProps {
   type: "ALL" | "MANITO" | "MANITI";
   chatRoomId: number;
-  myInfo: myInfo;
   participants?: participant[];
-  messageList: message[];
-  refetch: () => void;
 }
 
 export default function ChatRoom({
   type,
   chatRoomId,
-  myInfo,
   participants,
-  messageList,
-  refetch,
 }: ChatRoomProps) {
-  const [messages, setMessages] = useState<message[]>(messageList);
   const [message, setMessage] = useState<string>("");
+  const { roomId } = useLocalSearchParams() as { roomId: string };
+  const { data: myInfo } = useGetMyInfo(roomId);
+  const { data: messages } = useGetChattings(roomId, type);
   const { mutate } = useSendMessage();
   const socket = useContext(SocketContext);
   const scrollViewRef = useRef<ScrollView>(null);
-
-  useEffect(() => {
-    refetch();
-  }, []);
+  const queryClient = useQueryClient();
 
   useEffect(() => {
     if (!socket) return;
+    console.log("roomId:", roomId, "type:", type, "chatRoomId:", chatRoomId);
 
-    socket.subscribe(`/sub/${chatRoomId}`, (message) => {
+    socket.subscribe(`/sub/chatting/${chatRoomId}`, (message) => {
       const parsedMessage: message = JSON.parse(message.body);
-      setMessages((prevMessage) => [...prevMessage, parsedMessage]);
+
+      queryClient.setQueryData(
+        ["chattingMessages", roomId, type],
+        (messageResponse: chattingMessagesResponse) => {
+          const currentMessages = messageResponse?.data || [];
+          return {
+            ...messageResponse,
+            data: [...currentMessages, parsedMessage],
+          };
+        }
+      );
     });
 
     return () => {
-      socket.unsubscribe(`/sub/${chatRoomId}`);
+      socket.unsubscribe(`/sub/chatting/${chatRoomId}`);
     };
-  }, [socket]);
+  }, [socket, roomId, type]);
 
   useEffect(() => {
     if (scrollViewRef.current) {
@@ -59,10 +66,10 @@ export default function ChatRoom({
       <View className="flex-1 pb-16">
         <ScrollView ref={scrollViewRef}>
           <View className="flex flex-col gap-2">
-            {messages.map((messageData, idx) => (
+            {messages?.map((messageData, idx) => (
               <ChatMessageCard
                 type={type}
-                isSender={messageData.writerId === myInfo.roomUserId}
+                isSender={messageData.writerId === myInfo?.roomUserId}
                 name={
                   type === "MANITO"
                     ? "당신의 마니또"
@@ -102,11 +109,12 @@ export default function ChatRoom({
           <Pressable
             disabled={!message.trim()}
             onPress={() => {
-              mutate({
-                roomId: chatRoomId,
-                writerId: myInfo.roomUserId,
-                content: message,
-              });
+              myInfo &&
+                mutate({
+                  roomId: chatRoomId,
+                  writerId: myInfo.roomUserId,
+                  content: message,
+                });
               setMessage("");
             }}
           >

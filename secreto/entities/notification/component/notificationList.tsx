@@ -13,14 +13,28 @@ interface NotificationListProps {
 }
 
 export default function NotificationList({ period }: NotificationListProps) {
-  const { data: notificationList } = useGetNotifications(period);
+  const {
+    data: notificationList,
+    hasNextPage,
+    fetchNextPage,
+    isFetchingNextPage,
+  } = useGetNotifications(period, 5);
+  console.log("period", period);
 
   return (
     <FlashList
+      key={period}
       data={notificationList}
       estimatedItemSize={100}
       renderItem={({ item }) => <Notification notification={item} />}
-      keyExtractor={(item) => item.notificationId.toString()}
+      keyExtractor={(item, idx) => idx.toString()}
+      onEndReachedThreshold={0.5}
+      onEndReached={() => {
+        if (hasNextPage && !isFetchingNextPage) {
+          console.log("Reached!");
+          fetchNextPage();
+        }
+      }}
       ListEmptyComponent={
         <View className="flex-1 items-center justify-center p-2">
           <Typography

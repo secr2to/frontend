@@ -1,6 +1,6 @@
 import { useGetNotifications } from "@/entities/notification/query/useGetNotifications";
 import { useEffect, useState } from "react";
-import { View } from "react-native";
+import { Image, View } from "react-native";
 import { Typography } from "@/shared/components";
 import {
   COLOR,
@@ -8,14 +8,14 @@ import {
 } from "@/shared/components/Typography/constant";
 
 export default function NoticeCount() {
-  const { data: notificationList } = useGetNotifications("ALL", 100);
+  const { data: notificationList } = useGetNotifications("ALL", 20);
   const [notReadNotice, setNotReadNotice] = useState<number>(0);
   const [noticeLabel, setNoticeLabel] = useState<string>("");
 
   useEffect(() => {
     if (notificationList) {
       setNotReadNotice(
-        notificationList.filter((notice) => !notice.readYn).length
+        notificationList.filter((notice) => notice.readYn === false).length
       );
     }
   }, [notificationList]);
@@ -23,10 +23,10 @@ export default function NoticeCount() {
   useEffect(() => {
     if (notReadNotice === 0) {
       setNoticeLabel("");
-    } else if (notReadNotice < 100) {
+    } else if (notReadNotice < 10) {
       setNoticeLabel(notReadNotice.toString());
     } else {
-      setNoticeLabel("99+");
+      setNoticeLabel("10+");
     }
   }, [notReadNotice]);
 

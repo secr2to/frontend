@@ -11,8 +11,6 @@ export const useGetRooms = (status: roomStatus) => {
   >({
     queryKey: ["getRooms", status],
     queryFn: () => getRooms(status),
-    staleTime: 0,
-    gcTime: 0,
     select: (data) => {
       return data.data;
     },

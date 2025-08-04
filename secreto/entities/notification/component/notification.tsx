@@ -20,8 +20,9 @@ export default function Notification({
     <Pressable onPress={onPress}>
       <View
         className={clsx(
-          "flex flex-col gap-4 p-2",
-          notification.readYn && "opacity-50"
+          "flex flex-col gap-4 py-2 px-4",
+          notification.readYn && "opacity-50",
+          "active:opacity-80 active:bg-inactive-background"
         )}
       >
         <View className="flex flex-row">
@@ -35,7 +36,10 @@ export default function Notification({
           <Typography label={notification.content} />
         </View>
         <View>
-          <Typography label="1분 전" color={COLOR.INACTIVE} />
+          <Typography
+            label={notification.generatedDate.toString()}
+            color={COLOR.INACTIVE}
+          />
         </View>
       </View>
     </Pressable>

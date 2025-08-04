@@ -3,7 +3,7 @@ import { getNotificationsResponse, notification } from "../type/type";
 import { getNotifications } from "../api/getNotifications";
 
 export const useGetNotifications = (
-  period: "TODAY" | "WEEK" | "ALL" = "ALL",
+  period: "TODAY" | "WEEK" | "ALL",
   size: number = 5
 ) => {
   return useSuspenseInfiniteQuery<
@@ -17,7 +17,9 @@ export const useGetNotifications = (
     initialPageParam: 1,
     queryFn: ({ pageParam }) => getNotifications(period, pageParam, size),
     getNextPageParam: (lastPage) =>
-      lastPage.data.hasNext ? lastPage.data.offset + 1 : undefined,
+      lastPage.data.hasNext
+        ? Math.floor(lastPage.data.offset / size) + 1
+        : undefined,
     select: (data) => {
       return data.pages.flatMap((page) => page.data.notificationList);
     },

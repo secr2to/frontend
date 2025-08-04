@@ -4,7 +4,7 @@ import { getNotificationsResponse } from "../type/type";
 
 export const getNotifications = async (
   period: "TODAY" | "WEEK" | "ALL",
-  page: number = 1,
+  page: number = 0,
   size: number = 5
 ): Promise<getNotificationsResponse> => {
   try {

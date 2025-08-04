@@ -19,6 +19,8 @@ export type getNotificationDetailResponse = commonResponse<notificationDetail>;
 
 export type getNotificationsResponse = commonResponse<{
   notificationList: notification[];
+  totalPages: number;
+  totalNotifications: number;
   hasNext: boolean;
   offset: number;
 }>;

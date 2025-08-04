@@ -10,6 +10,8 @@ import { getUserInfo } from "@/entities/users/api";
 import GlobalErrorBoundary from "@/shared/bound/globalErrorBoundary";
 import HttpErrorBoundary from "@/shared/bound/httpErrorBoundary";
 import LocalErrorBoundary from "@/shared/bound/localErrorBoundary";
+import { DevToolsBubble } from "react-native-react-query-devtools";
+import * as Clipboard from "expo-clipboard";
 
 export default function RootLayout() {
   const queryClient = new QueryClient({
@@ -19,6 +21,14 @@ export default function RootLayout() {
       },
     },
   });
+  const onCopy = async (text: string) => {
+    try {
+      await Clipboard.setStringAsync(text);
+      return true;
+    } catch {
+      return false;
+    }
+  };
   const [isLoading, setIsLoading] = useState(true);
   const saveUser = useUserStore((state) => state.saveUser);
   const logout = useUserStore((state) => state.logout);
@@ -61,6 +71,7 @@ export default function RootLayout() {
               <Stack.Screen name="(afterLogin)" />
               <Stack.Screen name="+not-found" />
             </Stack>
+            <DevToolsBubble onCopy={onCopy} queryClient={queryClient} />
             <StatusBar />
           </QueryClientProvider>
         </LocalErrorBoundary>
