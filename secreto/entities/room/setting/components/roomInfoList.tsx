@@ -1,8 +1,7 @@
 import { router } from "expo-router";
-import { View } from "react-native";
+import { Image, View } from "react-native";
 import RoomInfo from "./roominfo";
 import { roomInfo } from "../../regist/type/type";
-import { Profile } from "@/shared/components";
 
 interface RoomInfoProps {
   roomInfo: roomInfo;
@@ -13,18 +12,20 @@ export default function RoomInfoList({
   roomInfo,
   isManager = false,
 }: RoomInfoProps) {
+  console.log("roomInfo", roomInfo);
   return (
     <View className="flex-1 flex-col gap-2 px-10 py-5">
       <View className="flex flex-col gap-2 w-full justify-center items-center">
-        <Profile
-          size="xlarge"
-          imageUri={
+        <Image
+          source={
             roomInfo.imageUrl
-              ? roomInfo.imageUrl
+              ? { uri: roomInfo.imageUrl }
               : require("@/shared/images/default.png")
           }
-          resizeMode="cover"
-          defaultSource={require("@/shared/images/defaultGame.png")}
+          className={
+            "w-[100px] h-[100px] rounded-[5px] border border-inactive-background"
+          }
+          resizeMode="contain"
         />
       </View>
       {isManager && (

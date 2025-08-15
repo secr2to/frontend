@@ -2,11 +2,10 @@ import { api } from "@/shared/kyInstance";
 import { getRoomsResponse, roomStatus } from "../type/type";
 import { HttpError } from "@/shared/error";
 
-export const getRooms = async (
-  status: roomStatus
-): Promise<getRoomsResponse> => {
+export const getRooms = async (): // status: roomStatus
+Promise<getRoomsResponse> => {
   try {
-    const response = await api.get(`rooms?status=${status}`);
+    const response = await api.get(`rooms`);
 
     return response.json();
   } catch (error) {

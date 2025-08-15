@@ -52,13 +52,13 @@ export default function RoomProfile() {
         />
         <View>
           {profileUrl ? (
-            <Profile size="xlarge" imageUri={profileUrl} resizeMode="cover" />
+            <Profile size="xlarge" imageUri={profileUrl} resizeMode="contain" />
           ) : (
             <View className="border border-inactive-background rounded-full p-2">
               <Image
                 source={require("@/shared/images/default.png")}
                 className="w-40 h-40 rounded-full"
-                resizeMode="cover"
+                resizeMode="contain"
               />
             </View>
           )}

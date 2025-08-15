@@ -1,17 +1,26 @@
 import { Image, View } from "react-native";
 import RoomCard from "./roomCard";
 import { FlashList } from "@shopify/flash-list";
-import { roomStatus } from "../type/type";
 import { useGetRooms } from "../query/useGetRooms";
 import { Typography } from "@/shared/components";
 import { TYPOGRAPHY_TYPE } from "@/shared/components/Typography/constant";
+import { Dispatch, SetStateAction, useEffect } from "react";
 
 interface RoomListProps {
-  state: roomStatus;
+  state: "ALL" | "WAITING" | "PROGRESS" | "TERMINATED";
+  setGameStatus: Dispatch<
+    SetStateAction<"ALL" | "WAITING" | "PROGRESS" | "TERMINATED">
+  >;
 }
 
-export default function RoomList({ state }: RoomListProps) {
+export default function RoomList({ state, setGameStatus }: RoomListProps) {
   const { data: rooms, isFetched } = useGetRooms(state);
+
+  useEffect(() => {
+    if (rooms?.length === 0) {
+      setGameStatus("ALL");
+    }
+  }, [rooms, setGameStatus]);
 
   if (rooms.length === 0 && isFetched) {
     return (
@@ -22,11 +31,7 @@ export default function RoomList({ state }: RoomListProps) {
           resizeMode="contain"
         />
         <Typography
-          label={
-            state === "TERMINATED"
-              ? "아직 게임을 완료한 방이 없습니다."
-              : "현재 참여중인 방이 없습니다."
-          }
+          label={"현재 상태에 맞는 방이 없습니다."}
           style={TYPOGRAPHY_TYPE.MAIN_TITLE}
         />
       </View>

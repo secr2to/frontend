@@ -1,4 +1,4 @@
-export type roomStatus = "WAITING" | "PROGRESS" | "TERMINATED";
+export type roomStatus = "ALL" | "WAITING" | "PROGRESS" | "TERMINATED";
 
 export type roomsInfo = {
   roomId: number;
