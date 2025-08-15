@@ -10,11 +10,10 @@ interface ReplyListProps {
 
 export default function ReplyCount({ roomId, feedId }: ReplyListProps) {
   const { data: reply } = useGetReplies(roomId, feedId);
-  console.log("reply count", reply);
   return (
     <View>
       <Typography
-        label={`댓글 ${reply?.length}개`}
+        label={`댓글 ${reply?.feedInfo.replyCount}개`}
         style={TYPOGRAPHY_TYPE.BODY_BOLD}
       />
     </View>

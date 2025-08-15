@@ -12,23 +12,28 @@ export const useCancelLikeReply = () => {
   return useMutation<
     cancelLikeReplyResponse,
     Error,
-    { roomId: string; feedId: number; replyId: number; isNested?: boolean },
+    {
+      roomId: string;
+      feedId: number;
+      replyId: number;
+      rootId?: number;
+      isRoot?: boolean;
+    },
     { previousReplies: InfiniteData<getRepliesResponse> | undefined }
   >({
-    mutationFn: ({ roomId, feedId, replyId, isNested }) =>
-      cancelLikeReply(replyId),
-    onMutate: async ({ roomId, feedId, replyId, isNested }) => {
+    mutationFn: ({ replyId }) => cancelLikeReply(replyId),
+    onMutate: async ({ roomId, feedId, replyId, isRoot, rootId }) => {
       await queryClient.cancelQueries({
-        queryKey: ["getReplies", roomId, feedId, isNested && replyId],
+        queryKey: ["getReplies", roomId, feedId, !isRoot ? rootId : undefined],
       });
 
       const previousReplies = queryClient.getQueryData<
         InfiniteData<getRepliesResponse>
-      >(["getReplies", roomId, feedId, isNested && replyId]);
+      >(["getReplies", roomId, feedId, !isRoot ? rootId : undefined]);
 
       if (previousReplies) {
         queryClient.setQueryData<InfiniteData<getRepliesResponse>>(
-          ["getReplies", roomId, feedId, isNested && replyId],
+          ["getReplies", roomId, feedId, !isRoot ? rootId : undefined],
           (oldData) => {
             if (!oldData) return oldData;
             const newData = {
@@ -59,11 +64,11 @@ export const useCancelLikeReply = () => {
     onSuccess: ({ data }) => {
       console.log(data.success);
     },
-    onError: (err, { roomId, feedId, replyId, isNested }, context) => {
+    onError: (err, { roomId, feedId, rootId, isRoot }, context) => {
       console.error("Error liking reply:", err);
       if (context?.previousReplies) {
         queryClient.setQueryData(
-          ["getReplies", roomId, feedId, isNested && replyId],
+          ["getReplies", roomId, feedId, !isRoot ? rootId : undefined],
           context.previousReplies
         );
       }
