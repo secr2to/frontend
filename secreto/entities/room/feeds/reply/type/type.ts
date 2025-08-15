@@ -27,10 +27,17 @@ export type replyData = {
   mentionUserId?: number;
 };
 
+export type feedInfo = {
+  feedId: number;
+  replyCount: number;
+  heartCount: number;
+};
+
 export type getRepliesResponse = commonResponse<{
   content: reply[];
   hasNext: boolean;
   offset: number;
+  feedInfo: feedInfo;
 }>;
 
 export type registReplyResponse = commonResponse<{ feedId: number }>;

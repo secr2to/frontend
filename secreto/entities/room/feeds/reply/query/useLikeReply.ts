@@ -16,22 +16,28 @@ export const useLikeReply = () => {
   return useMutation<
     likeReplyResponse,
     Error,
-    { roomId: string; feedId: number; replyId: number; isNested?: boolean },
+    {
+      roomId: string;
+      feedId: number;
+      replyId: number;
+      isRoot?: boolean;
+      rootId?: number;
+    },
     { previousReplies: InfiniteData<getRepliesResponse> | undefined }
   >({
-    mutationFn: ({ roomId, feedId, replyId, isNested }) => likeReply(replyId),
-    onMutate: async ({ roomId, feedId, replyId, isNested }) => {
+    mutationFn: ({ replyId }) => likeReply(replyId),
+    onMutate: async ({ roomId, feedId, replyId, rootId, isRoot }) => {
       await queryClient.cancelQueries({
-        queryKey: ["getReplies", roomId, feedId, isNested && replyId],
+        queryKey: ["getReplies", roomId, feedId, !isRoot ? rootId : undefined],
       });
 
       const previousReplies = queryClient.getQueryData<
         InfiniteData<getRepliesResponse>
-      >(["getReplies", roomId, feedId, isNested && replyId]);
+      >(["getReplies", roomId, feedId, !isRoot ? rootId : undefined]);
 
       if (previousReplies) {
         queryClient.setQueryData<InfiniteData<getRepliesResponse>>(
-          ["getReplies", roomId, feedId, isNested && replyId],
+          ["getReplies", roomId, feedId, !isRoot ? rootId : undefined],
           (oldData) => {
             if (!oldData) return oldData;
             const newData = {
@@ -60,13 +66,13 @@ export const useLikeReply = () => {
       return { previousReplies };
     },
     onSuccess: ({ data }) => {
-      console.log(data.success);
+      console.log("like success?", data.success);
     },
-    onError: (err, { roomId, feedId, replyId, isNested }, context) => {
+    onError: (err, { roomId, feedId, rootId, isRoot }, context) => {
       console.error("Error liking reply:", err);
       if (context?.previousReplies) {
         queryClient.setQueryData(
-          ["getReplies", roomId, feedId, isNested && replyId],
+          ["getReplies", roomId, feedId, !isRoot ? rootId : undefined],
           context.previousReplies
         );
       }

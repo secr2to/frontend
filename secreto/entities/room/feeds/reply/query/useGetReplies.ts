@@ -2,7 +2,7 @@ import {
   useSuspenseInfiniteQuery,
   useSuspenseQuery,
 } from "@tanstack/react-query";
-import { getRepliesResponse, reply } from "../type/type";
+import { feedInfo, getRepliesResponse, reply } from "../type/type";
 import { getReplies } from "../api/getReplies";
 
 export const useGetReplies = (
@@ -13,7 +13,7 @@ export const useGetReplies = (
   return useSuspenseInfiniteQuery<
     getRepliesResponse,
     Error,
-    reply[],
+    { replies: reply[]; feedInfo: feedInfo },
     [_1: string, _2: string, _3: number, _4?: number],
     number
   >({
@@ -23,7 +23,10 @@ export const useGetReplies = (
     getNextPageParam: (lastPage) =>
       lastPage.data.hasNext ? lastPage.data.offset : undefined,
     select: (data) => {
-      return data.pages.flatMap((page) => page.data.content);
+      return {
+        replies: data.pages.flatMap((page) => page.data.content),
+        feedInfo: data.pages[0].data.feedInfo,
+      };
     },
   });
 };

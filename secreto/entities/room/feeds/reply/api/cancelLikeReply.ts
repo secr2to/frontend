@@ -6,7 +6,7 @@ export const cancelLikeReply = async (
   replyId: number
 ): Promise<cancelLikeReplyResponse> => {
   try {
-    const response = await api.delete(`replies/${replyId}/unheart`);
+    const response = await api.delete(`replies/${replyId}/heart`);
 
     return response.json();
   } catch (error) {
