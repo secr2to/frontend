@@ -14,14 +14,27 @@ import { router } from "expo-router";
 import { useGetRoomMembersProfile } from "@/entities/room/participants/query/useGetRoomMembersProfile";
 import { dateConverter } from "@/shared/utils/dateConverter";
 import MenuIcon from "@/shared/components/Icons/menuIcon";
+import ToastMenu from "@/shared/components/Menus/toastMenu";
+import { Dispatch, SetStateAction } from "react";
 const { width: screenWidth } = Dimensions.get("window");
 
 interface FeedProps {
   feed: feed;
   roomId: string;
+  openMenu: number | undefined;
+  setOpenMenu: Dispatch<SetStateAction<number | undefined>>;
+  setTargetId: Dispatch<SetStateAction<number | undefined>>;
+  setMode: Dispatch<SetStateAction<"modify" | "delete" | undefined>>;
 }
 
-export default function Feed({ feed, roomId }: FeedProps) {
+export default function Feed({
+  feed,
+  roomId,
+  openMenu,
+  setOpenMenu,
+  setTargetId,
+  setMode,
+}: FeedProps) {
   const { mutate: likeFeed } = useLikeFeed();
   const { mutate: unLikeFeed } = useCancelLikeFeed();
   const { data: profileImages } = useGetRoomMembersProfile(roomId);
@@ -116,10 +129,41 @@ export default function Feed({ feed, roomId }: FeedProps) {
             </View>
           </Pressable>
         </View>
-        <Pressable>
-          {/* 수정, 삭제 */}
+        <Pressable
+          onPress={() => {
+            setOpenMenu(feed.feedId);
+          }}
+        >
           <MenuIcon />
         </Pressable>
+        {openMenu && (
+          <ToastMenu
+            menu={[
+              {
+                label: "수정",
+                onPress: () => {
+                  setMode("modify");
+                  setTargetId(feed.feedId);
+                  setOpenMenu(undefined);
+                },
+              },
+              {
+                label: "삭제",
+                onPress: () => {
+                  setMode("delete");
+                  setTargetId(feed.feedId);
+                  setOpenMenu(undefined);
+                },
+              },
+              {
+                label: "닫기",
+                onPress: () => {
+                  setOpenMenu(undefined);
+                },
+              },
+            ]}
+          />
+        )}
       </View>
       <View>
         <Typography label={feed.heartMessage} />
