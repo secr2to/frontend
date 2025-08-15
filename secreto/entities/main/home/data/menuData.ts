@@ -10,6 +10,10 @@ export const menuItems = [
 ];
 export const badgeItems = [
   {
+    label: "전체",
+    state: "ALL",
+  },
+  {
     label: "대기중",
     state: "WAITING",
   },
